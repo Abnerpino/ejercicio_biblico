@@ -1,0 +1,144 @@
+.btn-volver-menu {
+  position: absolute;
+  top: 50px;
+  right: 1210px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.btn-volver-menu:hover {
+  color: #007bff;
+}
+
+.btn-volumen {
+  position: absolute;
+  top: 50px;
+  right: 30px;
+  cursor: pointer;
+}
+
+.pantalla-juego {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.button.green {
+  padding: 0px 15px;
+  border-radius: 50px;
+  background-color: #3fa847;
+  color: white;
+}
+
+.button.red {
+  padding: 0px 15px;
+  border-radius: 50px;
+  background-color: #FF0000;
+  color: white;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+.animar-aviso {
+  animation: shake 0.6s ease;
+}
+
+.equipo-box {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  width: 150px;
+  text-align: center;
+  background-color: white;
+  padding: 10px 10px;
+}
+
+.equipo-box.activo {
+  border-color: #28a745;
+  background-color: rgba(255, 166, 0, 0.75);
+}
+
+.texto-equipo {
+  display: block;
+  font-size: 24px;
+  text-align: center;
+}
+
+.texto-puntaje {
+  font-size: 20px;
+  font-family:monospace ;
+  font-weight: bold;
+}
+
+.tabla-preguntas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.fila {
+  display: flex;
+  gap: 5px;
+}
+
+.celda {
+  width: 175px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.celda.topico {
+  background-color: #007bff;
+  color: white;
+  font-size: 22px;
+}
+
+button.celda {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 175px;
+  height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+button.celda:hover {
+  border-color: #646cff;
+}
+
+button.celda.disabled {
+  pointer-events: auto;
+  /* permite clicks */
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+  border-color: #999;
+}

@@ -1,0 +1,139 @@
+.pantalla-menu {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+  font-family: sans-serif;
+}
+
+.div-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
+
+.texto-titulo {
+  font-size: 36px;
+  font-weight: bold;
+  font-family: cursive;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.paneles {
+  display: flex;
+  gap: 2rem;
+  height: 300px; /* Altura fija o máxima común para ambos paneles */
+}
+
+/* Ambos paneles ocuparán el mismo tamaño */
+.panel {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Oculta desbordes accidentales */
+}
+
+/* Estilo de contenedor scrollable */
+.archivo-lista {
+  background: white;
+  overflow-y: auto;
+  flex-grow: 1; /* Para que ocupe todo el espacio vertical restante */
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+/* Encabezado fijo */
+.archivo-encabezado {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  background-color: #ccc;
+  border-bottom: 1px solid black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.div-titulo {
+  display: flex;
+  width: 90%;
+  padding-left: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  
+}
+
+.div-icons {
+  display: flex;
+  width: 10%;
+  padding-right: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo-lista {
+  font-size: 22px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.titulo-configs {
+  font-size: 22px;
+  font-weight: bold;
+  font-family: sans-serif;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.div-configs {
+  margin-top: 10px;
+}
+
+input[type="number"] {
+  width: 94%;
+  margin-top: 0.4rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+}
+
+.btn-empezar {
+  margin-top: 22.5px;
+  padding: 1rem 2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ayuda-etiquetas {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 27.5px;
+  font-family:'Times New Roman', Times, serif ;
+  font-size: 17px;
+}
+
+.icono-volumen {
+  cursor: pointer;
+}
+
+.texto-etiqueta {
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.texto-etiqueta:hover {
+  color: #646cff;
+}

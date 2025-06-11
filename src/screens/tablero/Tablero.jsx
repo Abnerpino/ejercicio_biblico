@@ -1,0 +1,328 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import Volumen from '../../assets/volume.svg?react';
+import SinVolumen from '../../assets/volume-slash.svg?react';
+import { cargarArchivosGuardados } from '../../utils/storage';
+import Confirmacion from '../../modals/confirmacion';
+import Pregunta from '../../modals/pregunta';
+import Ganador from '../../modals/ganador';
+import preguntasJSON from '../../data/preguntas.json';
+import './Tablero.css';
+
+const Tablero = ({ volumen, setVolumen }) => {
+    const { state } = useLocation();
+    const navigate = useNavigate();
+    const [turno, setTurno] = useState(null);
+    const [puntajes, setPuntajes] = useState({});
+    const [preguntasData, setPreguntasData] = useState([]);
+    const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(null);
+    const [preguntasUsadas, setPreguntasUsadas] = useState(new Set());
+    const [ganador, setGanador] = useState(null);
+    const [finJuego, setFinJuego] = useState(false);
+    const [bloqueoActivo, setBloqueoActivo] = useState(false);
+    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+    const confirmacionResolver = useRef(null);
+    const iniciarBtnRef = useRef(null);
+
+    const archivoId = state?.archivoId;
+    const config = state?.config || { tiempoInicial: 30, incremento: 15, equipos: 2 };
+
+    // Cargar preguntas del archivo correspondiente
+    useEffect(() => {
+
+        if (!archivoId) {
+            navigate('/'); // regresar si no hay datos
+            return;
+        }
+
+        if (archivoId === 'original') {
+            setPreguntasData(preguntasJSON);
+        } else {
+            const guardados = cargarArchivosGuardados();
+            const archivo = guardados.find(a => a.id === archivoId);
+
+            if (!archivo) {
+                navigate('/');
+                return;
+            }
+
+            setPreguntasData(archivo.contenido);
+        }
+
+        // Inicializar puntajes dinámicamente según cantidad de equipos
+        const nuevosPuntajes = {};
+        for (let i = 1; i <= config.equipos; i++) {
+            nuevosPuntajes[`equipo${i}`] = 0;
+        }
+        setPuntajes(nuevosPuntajes);
+    }, [archivoId]);
+
+    const iniciarJuego = () => {
+        if (volumen) {
+            const start = new Audio('/sounds/start-game.mp3');
+            start.play().catch((e) => {
+                console.warn('No se pudo reproducir el sonido:', e);
+            });
+        }
+        const equipoInicial = `equipo${Math.floor(Math.random() * config.equipos + 1)}`;
+        setTurno(equipoInicial);
+        setFinJuego(false);
+    };
+
+    const finalizarJuego = () => {
+        setFinJuego(true);
+    };
+
+    const resetearJuego = () => {
+        const nuevosPuntajes = {};
+        for (let i = 1; i <= config.equipos; i++) {
+            nuevosPuntajes[`equipo${i}`] = 0;
+        }
+        setGanador(null);
+        setPuntajes(nuevosPuntajes);
+        setPreguntasUsadas(new Set());
+        setTurno(null);
+        setPreguntaSeleccionada(null);
+    };
+
+    // Función que muestra el modal y espera confirmación
+    const solicitarConfirmacion = (mensaje) => {
+        return new Promise((resolve) => {
+            confirmacionResolver.current = resolve;
+            setMostrarConfirmacion({ mensaje });
+        });
+    };
+
+    const volverAlMenu = async () => {
+        if (turno && !ganador) {
+            const confirmado = await solicitarConfirmacion(`¿Está seguro de querer volver al Menú? Todo el progreso de la partida se perderá.`);
+            if (!confirmado) return; // El usuario canceló
+        }
+        if (volumen) {
+            const disconnected = new Audio('/sounds/disconnected.mp3');
+            disconnected.play().catch((e) => {
+                console.warn('No se pudo reproducir el sonido:', e);
+            });
+        }
+        setTimeout(() => {
+            resetearJuego();  // Función que restablece preguntas, puntajes, etc.
+            navigate('/');    // Redirige al menú principal
+        }, 500);
+    };
+
+    const seleccionarPregunta = (topicoIndex, preguntaIndex) => {
+        const disable = new Audio('/sounds/notification-disable.mp3');
+        if (!turno || bloqueoActivo) {
+            if (volumen) {
+                disable.play().catch((e) => {
+                    console.warn('No se pudo reproducir el sonido:', e);
+                });
+            }
+            // Animación de sacudida en el botón de inicio
+            if (iniciarBtnRef.current) {
+                iniciarBtnRef.current.classList.remove('animar-aviso'); // reset si ya está aplicada
+                void iniciarBtnRef.current.offsetWidth; // reflow para reiniciar la animación
+                iniciarBtnRef.current.classList.add('animar-aviso');
+            }
+            return;
+        }
+        const clave = `${topicoIndex}-${preguntaIndex}`;
+        if (preguntasUsadas.has(clave)) {
+            if (volumen) {
+                disable.play().catch((e) => {
+                    console.warn('No se pudo reproducir el sonido:', e);
+                });
+            }
+            return;
+        }
+        if (volumen) {
+            const click = new Audio('/sounds/keyboard-click.mp3');
+            click.play().catch((e) => {
+                console.warn('No se pudo reproducir el sonido:', e);
+            });
+        }
+        const topico = preguntasData[topicoIndex];
+        setPreguntaSeleccionada({
+            topicoIndex,
+            preguntaIndex,
+            topico: topico.topico,
+            pregunta: topico.preguntas[preguntaIndex],
+            respuesta: topico.respuestas[preguntaIndex],
+            puntos: topico.puntos[preguntaIndex],
+            cita: topico.citas?.[preguntaIndex] ?? '',
+        });
+    };
+
+    const manejarRespuesta = (acertado) => {
+        if (!preguntaSeleccionada) return;
+
+        if (acertado) {
+            setPuntajes(prev => ({
+                ...prev,
+                [turno]: prev[turno] + preguntaSeleccionada.puntos,
+            }));
+        }
+
+        const clave = `${preguntaSeleccionada.topicoIndex}-${preguntaSeleccionada.preguntaIndex}`;
+        setPreguntasUsadas(prev => new Set(prev).add(clave));
+        setPreguntaSeleccionada(null);
+        setBloqueoActivo(true); // activar bloqueo
+        setTimeout(() => {
+            setBloqueoActivo(false);
+            // Cambiar turno al siguiente equipo
+            const equipos = Object.keys(puntajes);
+            const indexActual = equipos.indexOf(turno);
+            const siguiente = equipos[(indexActual + 1) % equipos.length];
+            setTurno(siguiente);
+        }, 1000);
+    };
+
+    useEffect(() => {
+        if (!turno) return;
+
+        const totalPreguntas = preguntasData.reduce(
+            (acc, topico) => acc + (topico.preguntas?.length || 0),
+            0
+        );
+
+        const juegoTerminado = finJuego || preguntasUsadas.size === totalPreguntas;
+
+        if (juegoTerminado) {
+            setTurno(null);
+            const puntajesArray = Object.entries(puntajes);
+            const maxPuntaje = Math.max(...puntajesArray.map(([_, p]) => p));
+
+            // Si todos los equipos tienen puntaje 0 => empate
+            if (puntajesArray.every(([_, p]) => p === 0)) {
+                setGanador('Empate');
+                return;
+            }
+
+            // Filtrar equipos que tienen el puntaje máximo
+            const equiposGanadores = puntajesArray.filter(([_, p]) => p === maxPuntaje);
+
+            if (equiposGanadores.length > 1) {
+                setGanador('Empate');
+            } else {
+                setGanador(equiposGanadores[0][0]); // nombre del equipo
+            }
+        }
+    }, [finJuego, preguntasUsadas, puntajes, preguntasData]);
+
+    return (
+        <div className="pantalla-juego">
+            <div className='btn-volver-menu'>
+                <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    size='2x'
+                    title='Regresar al Menú'
+                    onClick={volverAlMenu}
+                />
+            </div>
+            <div className='btn-volumen' title={volumen ? 'Silenciar sonidos del juego' : 'Activar sonidos del juego'}>
+                {volumen
+                    ? (
+                        <Volumen
+                            width={40}
+                            height={40}
+                            onClick={() => setVolumen(!volumen)}
+                        />
+                    ) : (
+                        <SinVolumen
+                            width={40}
+                            height={40}
+                            onClick={() => setVolumen(!volumen)}
+                        />
+                    )
+                }
+            </div>
+            <div className="header">
+                <div>
+                    {!turno
+                        ? <button ref={iniciarBtnRef} className="button green" onClick={iniciarJuego}><h3>Iniciar Juego</h3></button>
+                        : <button className="button red" onClick={finalizarJuego}><h3>Terminar Juego</h3></button>
+                    }
+                </div>
+                {Object.keys(puntajes).map((nombreEquipo) => {
+                    const nombreSeparado = nombreEquipo.replace(/(\D+)(\d+)/, '$1 $2');
+
+                    return (
+                        <div
+                            key={nombreEquipo}
+                            className={`equipo-box ${turno === nombreEquipo ? 'activo' : ''}`}
+                        >
+                            <p className='texto-equipo'>{nombreSeparado.toUpperCase()}</p>
+                            <p className='texto-puntaje'>{puntajes[nombreEquipo]}</p>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="tabla-preguntas">
+                <div className="fila topicos">
+                    {preguntasData.map((topico, i) => (
+                        <div key={i} className="celda topico">{topico.topico}</div>
+                    ))}
+                </div>
+                {[0, 1, 2, 3, 4].map((fila) => (
+                    <div className="fila" key={fila}>
+                        {preguntasData.map((topico, col) => {
+                            const clave = `${col}-${fila}`;
+                            const usada = preguntasUsadas.has(clave);
+                            return (
+                                <button
+                                    key={col}
+                                    onClick={() => seleccionarPregunta(col, fila)}
+                                    className={`button celda ${usada ? 'disabled' : ''}`}
+                                >
+                                    {topico.puntos[fila]}
+                                </button>
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
+
+            {mostrarConfirmacion && (
+                <Confirmacion
+                    mensaje={mostrarConfirmacion.mensaje}
+                    onConfirmar={() => {
+                        confirmacionResolver.current(true);
+                        setMostrarConfirmacion(false);
+                    }}
+                    onCancelar={() => {
+                        confirmacionResolver.current(false);
+                        setMostrarConfirmacion(false);
+                    }}
+                />
+            )}
+
+            {preguntaSeleccionada && (
+                <Pregunta
+                    index={preguntaSeleccionada.preguntaIndex}
+                    topico={preguntaSeleccionada.topico}
+                    pregunta={preguntaSeleccionada.pregunta}
+                    respuesta={preguntaSeleccionada.respuesta}
+                    puntos={preguntaSeleccionada.puntos}
+                    cita={preguntaSeleccionada.cita}
+                    tiempo={config.tiempoInicial}
+                    incremento={config.incremento}
+                    onResponder={manejarRespuesta}
+                    volumen={volumen}
+                />
+            )}
+
+            {ganador && (
+                <Ganador
+                    winner={ganador}
+                    onVolverAlMenu={volverAlMenu}
+                    volumen={volumen}
+                />
+            )}
+        </div>
+    );
+};
+
+export default Tablero;

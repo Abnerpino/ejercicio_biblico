@@ -1,0 +1,210 @@
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faFileCirclePlus, faCircleInfo, faCircleXmark, faCopy, faCode, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import './Multiple.css';
+
+const data = [
+    {
+        topico: "Tópico 1",
+        puntos: [100, 200, 300],
+        preguntas: [
+            "Pregunta 1",
+            "Pregunta 2",
+            "Pregunta 3"
+        ],
+        respuestas: [
+            "Respuesta 1",
+            "Respuesta 2",
+            "Respuesta 3"
+        ],
+        citas: [
+            "Cita 1",
+            "Cita 2",
+            "Cita 3"
+        ]
+    },
+    {
+        topico: "Tópico 2",
+        puntos: [100, 200, 300],
+        preguntas: [
+            "Pregunta 1",
+            "Pregunta 2",
+            "Pregunta 3"
+        ],
+        respuestas: [
+            "Respuesta 1",
+            "Respuesta 2",
+            "Respuesta 3"
+        ],
+        citas: [
+            "",
+            "Cita 2",
+            ""
+        ]
+    }
+];
+
+const Multiple = ({ modal, onCerrar }) => {
+    const [showNotification, setShowNotification] = useState(false);
+
+    const copiarAlPortapapeles = () => {
+        navigator.clipboard.writeText(JSON.stringify(data, null, 2))
+            .then(() => {
+                setShowNotification(true);
+            })
+            .catch(err => {
+                alert("Error al copiar: ", err);
+            });
+    };
+
+    // Ocultar la notificación después de 2 segundos
+    useEffect(() => {
+        if (showNotification) {
+            const timer = setTimeout(() => setShowNotification(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [showNotification]);
+
+    const howToPlay =
+        <div className='div-contenido'>
+            <div className='modal-header-1'>
+                <div className="center-content">
+                    <FontAwesomeIcon icon={faPlay} beat style={{ fontSize: "24px", }} />
+                    <p className='text-titulo'>¿CÓMO JUGAR?</p>
+                </div>
+                <FontAwesomeIcon
+                    icon={faCircleXmark}
+                    onClick={onCerrar}
+                    title="Cerrar"
+                    style={{ color: "#ff0000", fontSize: "24px", }}
+                />
+            </div>
+            <div className='modal-mensaje'>
+                <p className='text-message'>Lo primero que tienes que hacer es seleccionar un archivo de preguntas y despues establecer las configuraciones iniciales.</p>
+                <br></br>
+                <p className='text-subtitulo'>Archivos de Preguntas</p>
+                <p className='text-message'>Por defecto ya viene cargado un archivo de preguntas, pero tú puedes agregar tu archivo con tus propias preguntas, para ello solo pulsa en el icono de "Agregar archivo" y seleccionalo.</p>
+                <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "¿Cómo agrego mis preguntas?" que se encuentra en el Menú principal.</p>
+                <p className='text-message'>Si ya agregaste algún archivo de preguntas y quieres eliminarlo, solo presiona el icono de "Eliminar archivo". ¡El archivo de preguntas que viene cargado por defecto no se puede eliminar!</p>
+                <br></br>
+                <p className='text-subtitulo'>Configuraciones Iniciales</p>
+                <p className='text-message'>El tiempo inicial se refiere al "tiempo base" que tiene cada pregunta, el cual por defecto es de 30 segundos y no puede ser menor a 15 segundos.</p>
+                <p className='text-message'>El incremento por puntaje es el tiempo que se agrega al "tiempo base" de las preguntas cada vez que aumenta su puntaje, el cual por defecto es de 15 segundos y no puede ser menor a 5 segundos.</p>
+                <p className='text-message'>La cantidad mínima de equipos es de 1 y la máxima es de 5, el valor por defecto es 2.</p>
+                <p className='text-message'>El valor de estas tres cantidades tiene que ser un número entero. No se permiten número con punto decimal.</p>
+                <br></br>
+                <p className='text-subtitulo'>Todo Listo</p>
+                <p className='text-message'>Una vez seleccionado el archivo de preguntas a usar y establecidas las configuraciones iniciales, pulsa el botón "Comenzar".</p>
+                <p className='text-message'>Se mostrará el tablero del juego: botón de inicio, equipos, tópicos y puntajes de las preguntas. Presione el botón "Iniciar Juego" para empezar a contestar las preguntas.</p>
+                <p className='text-message'>Se elegirá aleatoriamente al equipo que inicia, así como a los equipos siguientes. El equipo en turno se iluminará en color anaranjado.</p>
+                <p className='text-message'>Cuando seleccione la cantidad de puntos que desea ganar, se mostrará una pequeña ventana con: un temporizador que iniciará la cuenta regresiva automáticamente, la pregunta y un botón para mostrar la respuesta.</p>
+                <p className='text-message'>Puede esperar a que termine el tiempo para mostrar la respuesta o hacerlo antes. Al presionar el botón (si aún quedaba tiempo, este llegará a 0 inmediatamente), aparecerá la respuesta, su cita bíblica (si aplica) y dos botones, uno por si la respuesta fue correcta y otro por si fue incorrecta.</p>
+                <p className='text-message'>Automáticamente se sumarán los puntos si la respuesta fue correcta (no se restan si fue incorrecta) y se mostrará nuevamente el tablero. Para evitar seleccionar alguna pregunta por accidente al cerrarse la ventana, hay un bloqueo de seguridad de 1 segundo, en el cual no se podrá elegir ninguna pregunta hasta que el siguiente equipo esté en turno.</p>
+                <p className='text-message'>El juego acaba cuando se terminan las preguntas o se presiona el botón "Terminar Juego". Inmediatamente se mostrará una ventana que anuncia al ganador (o un empate, si es el caso) y un botón para volver al Menú.</p>
+                <p className='text-message'>Para activar o desactivar los sonidos del juego, pulse sobre el icono de Sonido.</p>
+                <p className='text-message'><b>Nota:</b> No se requiere de una conexión a Internet para poder jugar.</p>
+            </div>
+        </div>
+    ;
+
+    const howAddQuetions =
+        <div className='div-contenido'>
+            <div className='modal-header-1'>
+                <div className="center-content">
+                    <FontAwesomeIcon icon={faFileCirclePlus} beat style={{ fontSize: "24px", }} />
+                    <p className='text-titulo'>¿CÓMO AGREGO MIS PREGUNTAS?</p>
+                </div>
+                <FontAwesomeIcon
+                    icon={faCircleXmark}
+                    onClick={onCerrar}
+                    title="Cerrar"
+                    style={{ color: "#ff0000", fontSize: "24px", }}
+                />
+            </div>
+            <div className='modal-mensaje'>
+                <p className='text-message'>Lo primero que se debe aclarar es que el archivo de preguntas debe tener cierta estructura y una extensión de archivo en particular: JSON.</p>
+                <br></br>
+                <p className='text-subtitulo'>Estructura del Archivo</p>
+                <p className='text-message'>El archivo debe contener los tópicos (máximo 6 tópicos), los puntajes, sus preguntas, sus respuestas y opcionalmente, las citas bíblicas.</p>
+                <p className='text-message'><b>Nota:</b> Todos los tópicos deben tener la misma cantidad de preguntas, respuestas y puntajes (máximo 5 para cada uno), ninguno de estos puede estar vacío, solo las citas bíblicas pueden estar vacías, los puntajes deben ser números enteros (se recomienda usar multiplos de 100).</p>
+                <p className='text-message'>A continuación se muestra un pequeño ejemplo de cómo estructurar el archivo:</p>
+                <div className='div-json'>
+                    <FontAwesomeIcon
+                        icon={faCopy}
+                        className="copy-icon"
+                        onClick={copiarAlPortapapeles}
+                        title="Copiar JSON"
+                    />
+                    <pre className='text-json'>{JSON.stringify(data, null, 2)}</pre>
+                    {showNotification && (
+                        <div className="notification">
+                            ¡Copiado al portapapeles!
+                        </div>
+                    )}
+                </div>
+                <br></br>
+                <p className='text-subtitulo'>Archivo JSON</p>
+                <p className='text-message'>Un archivo JSON (JavaScript Object Notation) es un formato de texto que se utiliza para almacenar e intercambiar datos de manera estructurada y legible.</p>
+                <p className='text-message'>Antes de crear un archivo JSON, se debe comprender su sintaxis:</p>
+                <ul className='lista'>
+                    <li className='elemento-lista'>Los datos están en pares nombre-valor.</li>
+                    <li className='elemento-lista'>Los datos están separados por comas.</li>
+                    <li className='elemento-lista'>Las llaves &#123; &#125; contienen objetos.</li>
+                    <li className='elemento-lista'>Los corchetes [ ] contienen matrices.</li>
+                    <li className='elemento-lista'>Las cadenas (texto) deben estar entre comillas dobles " ".</li>
+                </ul>
+                <p className='text-message'>Puede hacer su archivo JSON en el Bloc de Notas de su PC, solo recuerde que al guardarlo, debe quitar la extensión '.txt' (de Archivo de Texto) y reemplazarla por '.json' (de Archivo JSON).</p>
+                <p className='text-message'>En las siguientes páginas puede consultar más a detalle cómo crear un archivo JSON y cómo validarlo para saber si es correcto:</p>
+                <div className='div-links'>
+                    <a href="https://leapcell.io/blog/how-to-make-a-json-file" target="_blank">Cómo crear un archivo JSON</a>
+                    <a href="https://jsononline.net/es/json-validator" target="_blank">Validador JSON</a>
+                </div>
+            </div>
+        </div>
+    ;
+
+    const about =
+        <div className='div-contenido'>
+            <div className='modal-header-2'>
+                <div className="center-content">
+                    <FontAwesomeIcon icon={faCircleInfo} beat style={{ fontSize: "24px", }} />
+                    <p className='text-titulo'>ACERCA DE</p>
+                </div>
+                <FontAwesomeIcon
+                    icon={faCircleXmark}
+                    onClick={onCerrar}
+                    title="Cerrar"
+                    style={{ color: "#ff0000", fontSize: "24px", }}
+                />
+            </div>
+            <div className='modal-mensaje'>
+                <p className='text-about'>Este "Ejercicio Bíblico" fue hecho con la finalidad de incentivar el estudio de la Palabra de Dios. Si fallaste en alguna pregunta, no te preocupes, puedes leer la cita y memorizar la respuesta, pero si acertaste en todas las preguntas, felicidades, eso indica que estudias tu Biblia. Te invito a que sigas leyendola para profundizar más en el conocimiento de la Palabra de Dios.</p>
+                <div className='div-info'>
+                    <FontAwesomeIcon icon={faCode} style={{marginRight: "5px"}} />
+                    <p className='text-about'><b>Desarrollador:</b> Ing. Abner Pino Federico</p>
+                </div>
+                <div className='div-info'>
+                    <FontAwesomeIcon icon={faEnvelope} style={{marginRight: "5px"}} />
+                    <p className='text-about'><b>Contacto:</b> abnerpino15@gmail.com</p>
+                </div>
+                <p className='text-versiculo'>"Escudriñad las Escrituras; porque a vosotros os parece que en ellas tenéis la vida eterna; y ellas son las que dan testimonio de mí." - San Juan 5:39</p>
+            </div>
+        </div>
+    ;
+
+    return (
+        <div className="modal">
+            <div className="modal-contenido">
+                {modal === 1
+                    ? howToPlay
+                    : (modal === 2
+                        ? howAddQuetions
+                        : about
+                    )
+                }
+            </div>
+        </div>
+    );
+};
+
+export default Multiple;

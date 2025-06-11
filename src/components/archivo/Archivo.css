@@ -1,0 +1,93 @@
+.archivo-card {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 1rem;
+}
+
+.check-box {
+  width: min-content;
+  align-content: center;
+  padding-right: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: antiquewhite;
+  border: 1px solid #ccc;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 5px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.archivo-header {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5px;
+}
+
+.archivo-titulo {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+.archivo-topicos {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  gap: 6px;
+  padding-bottom: 4px;
+  margin-top: 5px;
+  margin-bottom: -5px;
+}
+
+.archivo-topicos span {
+  background: #dfefff;
+  border: 1px solid #000;
+  padding: 2.5px 5px;
+  border-radius: 6px;
+  font-size: 10px;
+}
+
+.archivo-footer {
+  display: flex;
+  margin-bottom: 5px;
+  justify-content: left;
+}
+.archivo-total {
+  margin-top: 0.5rem;
+  font-size: 14px;
+  color: #000;
+}
+
+/* Tamaño de la barra de scroll horizontal */
+.archivo-topicos::-webkit-scrollbar {
+  height: 8px; /* Tamaño suficiente para arrastrar */
+  background: transparent; /* Sin fondo visible */
+}
+
+/* Estilo del "thumb" o barra que se mueve */
+.archivo-topicos::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+  min-height: 8px; /* Asegura que el thumb tenga altura suficiente */
+  box-sizing: border-box;
+  border: 0px solid #fff; /* Añade borde transparente para ampliar área clickeable */
+}
+
+/* Quitar el track (fondo del scroll) */
+.archivo-topicos::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05); /* Muy claro para mantener área clickeable */
+}
+
+/* Quitar las flechas (botones) */
+.archivo-topicos::-webkit-scrollbar-button {
+  display: none; /* Oculta las flechas */
+}
