@@ -22,7 +22,7 @@ const archivoOriginal = {
 const Menu = ({ volumen, setVolumen }) => {
   const [archivos, setArchivos] = useState([]);
   const [archivoSeleccionado, setArchivoSeleccionado] = useState('original');
-  const [config, setConfig] = useState({ tiempoInicial: 30, incremento: 15, equipos: 2 });
+  const [config, setConfig] = useState({ tiempoInicial: 30, incremento: 15, equipos: 1 });
   const [mensajeError, setMensajeError] = useState('');
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
@@ -30,6 +30,15 @@ const Menu = ({ volumen, setVolumen }) => {
   const confirmacionResolver = useRef(null);
   const inputRef = useRef();
   const navigate = useNavigate();
+
+  const archivoActual = archivos.find(a => a.id === archivoSeleccionado);
+  const totalPreguntas = archivoActual ? archivoActual.total : 0;
+  const opcionesEquipos = [1, 2, 3, 4, 5];
+
+  // Función para manejar selección de equipos
+  const seleccionarEquipos = (num) => {
+    setConfig(prev => ({ ...prev, equipos: num }));
+  };
 
   useEffect(() => {
     const guardados = cargarArchivosGuardados();
@@ -191,9 +200,6 @@ const Menu = ({ volumen, setVolumen }) => {
     if (config.incremento < 5) {
       errores.push("El tiempo de incremento por puntaje no puede ser menor a 5 segundos.");
     }
-    if (config.equipos < 1 || config.equipos > 5) {
-      errores.push("La cantidad mínima de equipos es de 1 y máxima de 5.");
-    }
     if (Number.isInteger(config.tiempoInicial) === false || Number.isInteger(config.incremento) === false || Number.isInteger(config.equipos) === false) {
       errores.push("Las cantidades deben ser números enteros, no se permiten números con punto decimal.");
     }
@@ -234,7 +240,6 @@ const Menu = ({ volumen, setVolumen }) => {
 
   return (
     <div className="pantalla-menu">
-
       <div className='div-header'>
         <FontAwesomeIcon icon={faBookBible} fade size='2x' />
         <p className='texto-titulo'>¿QUÉ TANTO SABES DE LA BIBLIA?</p>
@@ -290,9 +295,35 @@ const Menu = ({ volumen, setVolumen }) => {
             <label>Incremento por puntaje (s):
               <input type="number" min={5} value={config.incremento} onChange={(e) => setConfig({ ...config, incremento: +e.target.value })} />
             </label>
-            <label>Número de equipos:
-              <input type="number" min={1} max={5} value={config.equipos} onChange={(e) => setConfig({ ...config, equipos: +e.target.value })} />
-            </label>
+            <label>Número de equipos:</label>
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '8px' }}>
+              {opcionesEquipos.map((num) => {
+                const habilitado = totalPreguntas > 0 && (totalPreguntas % num === 0);
+                const seleccionado = config.equipos === num;
+
+                return (
+                  <button
+                    key={num}
+                    onClick={() => habilitado && seleccionarEquipos(num)}
+                    disabled={!habilitado}
+                    style={{
+                      padding: '8px 12px',
+                      cursor: habilitado ? 'pointer' : 'not-allowed',
+                      backgroundColor: seleccionado ? '#708090' : '#fffff0',
+                      color: seleccionado ? 'white' : 'black',
+                      border: '1px solid #000',
+                      borderRadius: '4px',
+                      opacity: habilitado ? 1 : 0.25,
+                      userSelect: 'none',
+                      fontWeight: seleccionado ? 'bold' : 'normal',
+                    }}
+                    title={habilitado ? (num === 1 ? `Seleccionar ${num} equipo` : `Seleccionar ${num} equipos`) : `No válido con ${totalPreguntas} preguntas`}
+                  >
+                    {num}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
