@@ -31,7 +31,7 @@ const Tablero = ({ volumen, setVolumen }) => {
 
     const archivoId = state?.archivoId;
     const config = state?.config || { tiempoInicial: 30, incremento: 15, equipos: 1 };
-    const coloresEquipos = ['#00008b', '#ff00ff', '#5f9ea0', '#d2691e', '#006400']; // #5f9ea0, #d2691e, #00008b, #006400, #db7093
+    const coloresEquipos = ['#00008b', '#ff00ff', '#5f9ea0', '#d2691e', '#006400'];
 
     // Cargar preguntas del archivo correspondiente
     useEffect(() => {
@@ -330,6 +330,7 @@ const Tablero = ({ volumen, setVolumen }) => {
             {ganador && (
                 <Ganador
                     winner={ganador}
+                    puntajes={puntajes}
                     onVolverAlMenu={volverAlMenu}
                     volumen={volumen}
                 />
