@@ -5,6 +5,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados } from '../../utils/storage';
+import Ordenacion from '../../modals/ordenacion';
 import Confirmacion from '../../modals/confirmacion';
 import Pregunta from '../../modals/pregunta';
 import Ganador from '../../modals/ganador';
@@ -23,15 +24,17 @@ const Tablero = ({ volumen, setVolumen }) => {
     const [finJuego, setFinJuego] = useState(false);
     const [bloqueoActivo, setBloqueoActivo] = useState(false);
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+    const [mostrarModalOrden, setMostrarModalOrden] = useState(false);
+    const [ordenEquipos, setOrdenEquipos] = useState([]);
     const confirmacionResolver = useRef(null);
     const iniciarBtnRef = useRef(null);
 
     const archivoId = state?.archivoId;
-    const config = state?.config || { tiempoInicial: 30, incremento: 15, equipos: 2 };
+    const config = state?.config || { tiempoInicial: 30, incremento: 15, equipos: 1 };
+    const coloresEquipos = ['#00008b', '#ff00ff', '#5f9ea0', '#d2691e', '#006400']; // #5f9ea0, #d2691e, #00008b, #006400, #db7093
 
     // Cargar preguntas del archivo correspondiente
     useEffect(() => {
-
         if (!archivoId) {
             navigate('/'); // regresar si no hay datos
             return;
@@ -66,9 +69,21 @@ const Tablero = ({ volumen, setVolumen }) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
         }
-        const equipoInicial = `equipo${Math.floor(Math.random() * config.equipos + 1)}`;
-        setTurno(equipoInicial);
+        if (config.equipos === 1) {
+            setOrdenEquipos(['equipo1']);
+            setTurno('equipo1');
+        } else {
+            const equipos = Array.from({ length: config.equipos }, (_, i) => `equipo${i + 1}`);
+            const aleatorio = equipos.sort(() => Math.random() - 0.5);
+            setOrdenEquipos(aleatorio);
+            setMostrarModalOrden(true);
+        }
         setFinJuego(false);
+    };
+
+    const cerrarModalOrden = () => {
+        setMostrarModalOrden(false);
+        setTurno(ordenEquipos[0]);
     };
 
     const finalizarJuego = () => {
@@ -85,6 +100,7 @@ const Tablero = ({ volumen, setVolumen }) => {
         setPreguntasUsadas(new Set());
         setTurno(null);
         setPreguntaSeleccionada(null);
+        setOrdenEquipos([]);
     };
 
     // Función que muestra el modal y espera confirmación
@@ -158,6 +174,9 @@ const Tablero = ({ volumen, setVolumen }) => {
     const manejarRespuesta = (acertado) => {
         if (!preguntaSeleccionada) return;
 
+        const clave = `${preguntaSeleccionada.topicoIndex}-${preguntaSeleccionada.preguntaIndex}`;
+        setPreguntasUsadas(prev => new Set(prev).add(clave));
+
         if (acertado) {
             setPuntajes(prev => ({
                 ...prev,
@@ -165,16 +184,13 @@ const Tablero = ({ volumen, setVolumen }) => {
             }));
         }
 
-        const clave = `${preguntaSeleccionada.topicoIndex}-${preguntaSeleccionada.preguntaIndex}`;
-        setPreguntasUsadas(prev => new Set(prev).add(clave));
         setPreguntaSeleccionada(null);
         setBloqueoActivo(true); // activar bloqueo
         setTimeout(() => {
             setBloqueoActivo(false);
             // Cambiar turno al siguiente equipo
-            const equipos = Object.keys(puntajes);
-            const indexActual = equipos.indexOf(turno);
-            const siguiente = equipos[(indexActual + 1) % equipos.length];
+            const indexActual = ordenEquipos.indexOf(turno);
+            const siguiente = ordenEquipos[(indexActual + 1) % ordenEquipos.length];
             setTurno(siguiente);
         }, 1000);
     };
@@ -182,14 +198,10 @@ const Tablero = ({ volumen, setVolumen }) => {
     useEffect(() => {
         if (!turno) return;
 
-        const totalPreguntas = preguntasData.reduce(
-            (acc, topico) => acc + (topico.preguntas?.length || 0),
-            0
-        );
+        const totalPreguntas = preguntasData.reduce((acc, t) => acc + (t.preguntas?.length || 0), 0);
+        const terminado = finJuego || preguntasUsadas.size === totalPreguntas;
 
-        const juegoTerminado = finJuego || preguntasUsadas.size === totalPreguntas;
-
-        if (juegoTerminado) {
+        if (terminado) {
             setTurno(null);
             const puntajesArray = Object.entries(puntajes);
             const maxPuntaje = Math.max(...puntajesArray.map(([_, p]) => p));
@@ -201,13 +213,8 @@ const Tablero = ({ volumen, setVolumen }) => {
             }
 
             // Filtrar equipos que tienen el puntaje máximo
-            const equiposGanadores = puntajesArray.filter(([_, p]) => p === maxPuntaje);
-
-            if (equiposGanadores.length > 1) {
-                setGanador('Empate');
-            } else {
-                setGanador(equiposGanadores[0][0]); // nombre del equipo
-            }
+            const ganadores = puntajesArray.filter(([_, p]) => p === maxPuntaje);
+            setGanador(ganadores.length > 1 ? 'Empate' : ganadores[0][0]);
         }
     }, [finJuego, preguntasUsadas, puntajes, preguntasData]);
 
@@ -245,19 +252,17 @@ const Tablero = ({ volumen, setVolumen }) => {
                         : <button className="button red" onClick={finalizarJuego}><h3>Terminar Juego</h3></button>
                     }
                 </div>
-                {Object.keys(puntajes).map((nombreEquipo) => {
-                    const nombreSeparado = nombreEquipo.replace(/(\D+)(\d+)/, '$1 $2');
-
-                    return (
-                        <div
-                            key={nombreEquipo}
-                            className={`equipo-box ${turno === nombreEquipo ? 'activo' : ''}`}
-                        >
-                            <p className='texto-equipo'>{nombreSeparado.toUpperCase()}</p>
-                            <p className='texto-puntaje'>{puntajes[nombreEquipo]}</p>
-                        </div>
-                    );
-                })}
+                {/* Mostrar equipos solo después de cerrar el modal */}
+                {turno && ordenEquipos.length > 0 && !mostrarModalOrden && ordenEquipos.map((equipo, i) => (
+                    <div
+                        key={equipo}
+                        className={`equipo-box ${turno === equipo ? 'activo' : ''}`}
+                        
+                    >
+                        <p className='texto-equipo'>{equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}</p>
+                        <p className='texto-puntaje'>{puntajes[equipo]}</p>
+                    </div>
+                ))}
             </div>
 
             <div className="tabla-preguntas">
@@ -284,6 +289,14 @@ const Tablero = ({ volumen, setVolumen }) => {
                     </div>
                 ))}
             </div>
+
+            {mostrarModalOrden && (
+                <Ordenacion
+                    equipos={ordenEquipos}
+                    colores={coloresEquipos}
+                    onCerrar={cerrarModalOrden}
+                />
+            )}
 
             {mostrarConfirmacion && (
                 <Confirmacion
