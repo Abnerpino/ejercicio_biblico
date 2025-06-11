@@ -37,15 +37,14 @@ const Ordenacion = ({ equipos, colores, onCerrar }) => {
                 </div>
                 <div className="lista-equipos">
                     {equipos.slice(0, equiposVisibles).map((equipo, i) => (
-                        <div className='div-equipo'>
-                            <p className='numero-turno'>{i + 1}°.</p>
+                        <div key={equipo} className='div-equipo'>
+                            <p className='numero-turno'>{i+1}{(i+1 === 1 || i+1 === 3) ? 'er' : (i+1 >= 4 ? 'to' : 'do')} Turno:</p>
                             <div
-                                key={equipo}
                                 className="equipo-box-orden visible"
                                 style={{
                                     backgroundColor: colores[i % colores.length],
                                     color: 'white',
-                                    transitionDelay: `${i * 0.3}s`, // cada equipo se anima con 0.3s de diferencia
+                                    transitionDelay: `${i * 0.3}s`, // cada equipo se anima con 0.3s de diferencia ro do ro to to
                                 }}
                             >
                                 {equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}

@@ -48,7 +48,7 @@
 .div-equipo {
     display: flex;
     flex-direction: row;
-    gap: 25px;
+    gap: 10px;
 }
 
 .numero-turno {
