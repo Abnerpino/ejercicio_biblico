@@ -22,11 +22,22 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
         setRespuestaCorrecta(value);
         setAnimando(true);
 
-        // Esperar duración de animación (por ejemplo, 2 segundos)
+        // Esperar duración de animación 2 segundos
         setTimeout(() => {
             setAnimando(false);
             onResponder(value);
         }, 2000);
+    };
+
+    const verRspuesta = () => {
+        if (volumen) {
+            const show = new Audio('/sounds/show.mp3');
+            show.play().catch((e) => {
+                console.warn('No se pudo reproducir el sonido:', e);
+            });
+        }
+
+        setMostrarRespuesta(true);
     };
 
     return (
@@ -58,9 +69,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                 {!mostrarRespuesta ? (
                     <button
                         className="button blue mb-4"
-                        onClick={() => {
-                            setMostrarRespuesta(true);
-                        }}
+                        onClick={verRspuesta}
                     >
                         Mostrar respuesta
                     </button>
