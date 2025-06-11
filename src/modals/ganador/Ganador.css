@@ -34,6 +34,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 15px;
 }
 
 .texto-winner {
@@ -41,7 +42,8 @@
   font-size: 20px;
   font-weight: 600;
   font-family: Arial, Helvetica, sans-serif;
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .volver-button {
