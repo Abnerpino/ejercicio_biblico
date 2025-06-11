@@ -90,8 +90,8 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-subtitulo'>Configuraciones Iniciales</p>
                 <p className='text-message'>El tiempo inicial se refiere al "tiempo base" que tiene cada pregunta, el cual por defecto es de 30 segundos y no puede ser menor a 15 segundos.</p>
                 <p className='text-message'>El incremento por puntaje es el tiempo que se agrega al "tiempo base" de las preguntas cada vez que aumenta su puntaje, el cual por defecto es de 15 segundos y no puede ser menor a 5 segundos.</p>
-                <p className='text-message'>La cantidad mínima de equipos es de 1 y la máxima es de 5, el valor por defecto es 2.</p>
-                <p className='text-message'>El valor de estas tres cantidades tiene que ser un número entero. No se permiten número con punto decimal.</p>
+                <p className='text-message'>El valor de estas dos cantidades tiene que ser un número entero. No se permiten números con punto decimal.</p>
+                <p className='text-message'>El número de equipos va desde 1 hasta 5, pero solo se podrán seleccionar las opciones que estén habilitadas. Para que una opción se habilite, el resultado de la división del número total de preguntas del archivo seleccionado entre el número de equipos de la opción, debe ser un número entero, si es con punto decimal, se inhabilita, esto para garantizar que todos los equipos contesten la misma cantidad de preguntas. El número de equipos por defecto es 1.</p>
                 <br></br>
                 <p className='text-subtitulo'>Todo Listo</p>
                 <p className='text-message'>Una vez seleccionado el archivo de preguntas a usar y establecidas las configuraciones iniciales, pulsa el botón "Comenzar".</p>
