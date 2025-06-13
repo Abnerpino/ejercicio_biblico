@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Timer.css';
 
-const Timer = ({ segundos, detener, volumen }) => {
+const Timer = ({ segundos, detener, volumen, onUpdate }) => {
   const [tiempoRestante, setTiempoRestante] = useState(segundos);
   const circleRef = useRef(null);
   const sonidoRef = useRef(null);
@@ -13,6 +13,7 @@ const Timer = ({ segundos, detener, volumen }) => {
   useEffect(() => {
     if (detener) {
       setTiempoRestante(0); // fuerza a 0 cuando se activa detener
+      onUpdate?.(0); // Notifica al modal de pregunta
       if (circleRef.current) {
         circleRef.current.style.animation = 'none';
         circleRef.current.style.strokeDashoffset = '283';
@@ -41,13 +42,15 @@ const Timer = ({ segundos, detener, volumen }) => {
     }
 
     const interval = setInterval(() => {
-      setTiempoRestante((t) => {
-        if (t <= 1) {
+      setTiempoRestante(prev => {
+        const nuevoTiempo = prev - 1;
+        if (nuevoTiempo <= 0) {
           clearInterval(interval);
+          onUpdate?.(0);
           return 0;
         }
 
-        if (t === 11 && !detener) {
+        if (nuevoTiempo === 10 && !detener) {
           if (sonidoRef.current) {
             if (volumen) {
               sonidoRef.current.play().catch((e) => {
@@ -57,7 +60,8 @@ const Timer = ({ segundos, detener, volumen }) => {
           }
         }
 
-        return t - 1;
+        onUpdate?.(nuevoTiempo);
+        return nuevoTiempo;
       });
     }, 1000);
 
