@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faEye } from '@fortawesome/free-solid-svg-icons';
+import Robo from '../../assets/robbery.svg?react';
 import Timer from '../../components/timer';
 import './Pregunta.css';
 
-const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen }) => {
+const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos }) => {
     const [mostrarRespuesta, setMostrarRespuesta] = useState(false);
     const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
     const [animando, setAnimando] = useState(false);
-
+    const [robarPuntos, setRobarPuntos] = useState(false);
     const segundosIniciales = tiempo + (index * incremento);
+    const [segundosRestantes, setSegundosRestantes] = useState(segundosIniciales);
+    const indexActual = equipos.indexOf(turno);
+    const siguiente = equipos[(indexActual + 1) % equipos.length];
+
+    const sincronizarTiempo = (nuevoTiempo) => {
+        setSegundosRestantes(nuevoTiempo);
+        /*if (nuevoTiempo === 0 && !mostrarRespuesta) {
+            setMostrarRespuesta(true);
+        }*/
+    };
 
     const responder = (value) => {
         if (volumen) {
@@ -25,11 +36,29 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
         // Esperar duración de animación 2 segundos
         setTimeout(() => {
             setAnimando(false);
-            onResponder(value);
+            let resultado = {
+                equipoSuma: null,
+                equipoResta: null,
+                puntos,
+            };
+
+            if (robarPuntos) {
+                if (value) {
+                    resultado.equipoSuma = siguiente;
+                } else {
+                    resultado.equipoResta = siguiente;
+                }
+            } else {
+                if (value) {
+                    resultado.equipoSuma = turno;
+                }
+            }
+
+            onResponder(value, resultado);
         }, 2000);
     };
 
-    const verRspuesta = () => {
+    const verRespuesta = () => {
         if (volumen) {
             const show = new Audio('/sounds/show.mp3');
             show.play().catch((e) => {
@@ -38,6 +67,17 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
         }
 
         setMostrarRespuesta(true);
+    };
+
+    const roboPuntos = () => {
+        if (volumen) {
+            const robo = new Audio('/sounds/robo.mp3');
+            robo.play().catch((e) => {
+                console.warn('No se pudo reproducir el sonido:', e);
+            });
+        }
+
+        setRobarPuntos(true);
     };
 
     return (
@@ -60,6 +100,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                     segundos={segundosIniciales}
                     detener={mostrarRespuesta}
                     volumen={volumen}
+                    onUpdate={sincronizarTiempo}
                 />
 
                 <div className="mb-4">
@@ -67,12 +108,25 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                 </div>
 
                 {!mostrarRespuesta ? (
-                    <button
-                        className="button blue mb-4"
-                        onClick={verRspuesta}
-                    >
-                        Mostrar respuesta
-                    </button>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '15px' }}>
+                        <button
+                            className="button blue mb-4"
+                            onClick={verRespuesta}
+                        >
+                            <FontAwesomeIcon icon={faEye} style={{ marginRight: '5px' }} />
+                            Mostrar respuesta
+                        </button>
+                        {numEquipos > 1 && segundosRestantes === 0 && (
+                            <button
+                                className="button yellow mb-4"
+                                onClick={roboPuntos}
+                                disabled={robarPuntos}
+                            >
+                                <Robo width={17.5} height={17.5} />
+                                {robarPuntos ? '¡Robo de Puntos Activado!' : `Robo de Puntos: ${siguiente.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}`}
+                            </button>
+                        )}
+                    </div>
                 ) : (
                     <div className="button-group">
                         <p className="respuesta-texto">Respuesta: <b>{respuesta}</b></p>

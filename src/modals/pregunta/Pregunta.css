@@ -80,11 +80,28 @@
 
 .button.blue {
   padding: 10px 20px;
-  margin-top: 15px;
   border: none;
   border-radius: 5px;
   background-color: #007bff;
   color: white;
+}
+
+.button.yellow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffff00;
+  border-color: #000;
+  color: black;
+  font-size: 12px;
+}
+
+.button.yellow:disabled{
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .respuesta-texto {
