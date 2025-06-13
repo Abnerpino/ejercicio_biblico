@@ -171,20 +171,27 @@ const Tablero = ({ volumen, setVolumen }) => {
         });
     };
 
-    const manejarRespuesta = (acertado) => {
+    const manejarRespuesta = (acertado, resultado) => {
         if (!preguntaSeleccionada) return;
 
         const clave = `${preguntaSeleccionada.topicoIndex}-${preguntaSeleccionada.preguntaIndex}`;
         setPreguntasUsadas(prev => new Set(prev).add(clave));
+        setPreguntaSeleccionada(null);
 
-        if (acertado) {
+        // Aplicar los puntajes según el resultado
+        if (resultado?.equipoSuma) {
             setPuntajes(prev => ({
                 ...prev,
-                [turno]: prev[turno] + preguntaSeleccionada.puntos,
+                [resultado.equipoSuma]: prev[resultado.equipoSuma] + resultado.puntos,
+            }));
+        } else if (resultado?.equipoResta) {
+            setPuntajes(prev => ({
+                ...prev,
+                [resultado.equipoResta]: Math.max(0, prev[resultado.equipoResta] - resultado.puntos),
             }));
         }
 
-        setPreguntaSeleccionada(null);
+
         setBloqueoActivo(true); // activar bloqueo
         setTimeout(() => {
             setBloqueoActivo(false);
@@ -257,7 +264,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                     <div
                         key={equipo}
                         className={`equipo-box ${turno === equipo ? 'activo' : ''}`}
-                        
+
                     >
                         <p className='texto-equipo'>{equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}</p>
                         <p className='texto-puntaje'>{puntajes[equipo]}</p>
@@ -324,6 +331,9 @@ const Tablero = ({ volumen, setVolumen }) => {
                     incremento={config.incremento}
                     onResponder={manejarRespuesta}
                     volumen={volumen}
+                    numEquipos={config.equipos}
+                    turno={turno}
+                    equipos={ordenEquipos}
                 />
             )}
 
