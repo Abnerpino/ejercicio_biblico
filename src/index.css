@@ -23,8 +23,9 @@ a:hover {
 
 body {
   margin: 0;
+  display: grid;
   place-items: center;
-  min-width: 320px;
+  min-width: 1100px;
   min-height: 100vh;
   align-content: center;
   font-family: Arial, sans-serif;
@@ -61,5 +62,21 @@ p {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  button {
+    font-size: 0.95em;
+    padding: 0.5em 1em;
   }
 }

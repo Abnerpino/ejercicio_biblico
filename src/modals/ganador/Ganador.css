@@ -56,3 +56,9 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+@media screen and (max-width: 768px) {
+  .modal {
+    width: 97.6vw;
+  }
+}

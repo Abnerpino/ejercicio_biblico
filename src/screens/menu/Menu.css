@@ -137,3 +137,75 @@ input[type="number"] {
 .texto-etiqueta:hover {
   color: #646cff;
 }
+
+@media screen and (max-width: 768px) {
+  .pantalla-menu {
+    padding: 1rem;
+  }
+
+  .div-header {
+    text-align: center;
+    gap: 0.5rem;
+    margin-top: 0;
+  }
+
+  .texto-titulo {
+    font-size: 28px;
+    margin: 0;
+  }
+
+  .paneles {
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+    width: 75%;
+    justify-self: center;
+  }
+
+  .panel {
+    height: auto;
+    min-height: 250px;
+    max-height: 400px;
+  }
+
+  input[type="number"] {
+    width: 96.75%;
+    margin-bottom: 1rem;
+  }
+
+  .btn-empezar {
+    width: 75%;
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .ayuda-etiquetas {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    font-size: 16px;
+  }
+
+  .archivo-encabezado {
+    font-size: 16px;
+  }
+
+  .titulo-lista,
+  .titulo-configs {
+    font-size: 20px;
+  }
+
+  .div-icons {
+    width: auto;
+    gap: 10px;
+    padding: 0 5px;
+  }
+
+  .div-titulo {
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
+}

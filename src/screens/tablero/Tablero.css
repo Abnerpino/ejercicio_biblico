@@ -142,3 +142,69 @@ button.celda.disabled {
   background-color: #e0e0e0;
   border-color: #999;
 }
+
+@media screen and (max-width: 768px) {
+  .pantalla-juego {
+    padding: 10px;
+  }
+
+  .btn-volver-menu {
+    top: 78px;
+    right: auto;
+    left: 20px;
+    font-size: 18px;
+  }
+
+  .btn-volumen {
+    top: 78px;
+    right: -75%;
+  }
+
+  .header {
+    gap: 35px;
+    justify-content:flex-start ;
+  }
+
+  .equipo-box {
+    width: 100px;
+    padding: 8px;
+  }
+
+  .texto-equipo {
+    font-size: 20px;
+  }
+
+  .texto-puntaje {
+    font-size: 18px;
+  }
+
+  .tabla-preguntas {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .fila {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .celda,
+  button.celda {
+    min-width: 120px;
+    height: 55px;
+    font-size: 16px;
+  }
+
+  .celda.topico {
+    font-size: 18px;
+  }
+
+  .button.green,
+  .button.red {
+    font-size: 16px;
+    padding: 0px 12px;
+    font-size: 14px;
+    margin-left: 65px;
+  }
+}
