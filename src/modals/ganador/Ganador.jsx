@@ -18,12 +18,12 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
 
         if (winner === 'Empate') {
             if (volumen) {
-                const draw = new Audio('/sounds/draw.mp3');
+                const draw = new Audio('sounds/draw.mp3');
                 draw.play().catch(err => console.warn('Error al reproducir sonido de empate:', err));
             }
         } else {
             if (volumen) {
-                const winners = new Audio('/sounds/winners.mp3');
+                const winners = new Audio('sounds/winners.mp3');
                 winners.play().catch(err => console.warn('Error al reproducir sonido de victoria:', err));
             }
 

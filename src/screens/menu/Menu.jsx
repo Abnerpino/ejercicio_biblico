@@ -39,7 +39,7 @@ const Menu = ({ volumen, setVolumen }) => {
   const seleccionarEquipos = (habilitado, num) => {
     if (!habilitado) {
       if (volumen) {
-        const notSelection = new Audio('/sounds/not-selection.mp3');
+        const notSelection = new Audio('sounds/not-selection.mp3');
         notSelection.play().catch((e) => {
           console.warn('No se pudo reproducir el sonido:', e);
         });
@@ -48,7 +48,7 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     if (volumen) {
-      const click = new Audio('/sounds/click.mp3');
+      const click = new Audio('sounds/click.mp3');
       click.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });
@@ -133,7 +133,7 @@ const Menu = ({ volumen, setVolumen }) => {
         // Mostrar errores si existen
         if (errores.length > 0) {
           if (volumen) {
-            const disable = new Audio('/sounds/notification-disable.mp3');
+            const disable = new Audio('sounds/notification-disable.mp3');
             disable.play().catch((e) => {
               console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -143,7 +143,7 @@ const Menu = ({ volumen, setVolumen }) => {
         }
 
         if (volumen) {
-          const insert = new Audio('/sounds/insert.mp3');
+          const insert = new Audio('sounds/insert.mp3');
           insert.play().catch((e) => {
             console.warn('No se pudo reproducir el sonido:', e);
           });
@@ -188,7 +188,7 @@ const Menu = ({ volumen, setVolumen }) => {
     if (!confirmado) return; // El usuario canceló
 
     if (volumen) {
-      const recycle = new Audio('/sounds/recycle.mp3');
+      const recycle = new Audio('sounds/recycle.mp3');
       recycle.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });
@@ -229,7 +229,7 @@ const Menu = ({ volumen, setVolumen }) => {
     // Mostrar errores si existen
     if (errores.length > 0) {
       if (volumen) {
-        const disable = new Audio('/sounds/notification-disable.mp3');
+        const disable = new Audio('sounds/notification-disable.mp3');
         disable.play().catch((e) => {
           console.warn('No se pudo reproducir el sonido:', e);
         });
@@ -239,7 +239,7 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     if (volumen) {
-      const connect = new Audio('/sounds/connect.mp3');
+      const connect = new Audio('sounds/connect.mp3');
       connect.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });

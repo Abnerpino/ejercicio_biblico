@@ -64,7 +64,7 @@ const Tablero = ({ volumen, setVolumen }) => {
 
     const iniciarJuego = () => {
         if (volumen) {
-            const start = new Audio('/sounds/start-game.mp3');
+            const start = new Audio('sounds/start-game.mp3');
             start.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -117,7 +117,7 @@ const Tablero = ({ volumen, setVolumen }) => {
             if (!confirmado) return; // El usuario canceló
         }
         if (volumen) {
-            const disconnected = new Audio('/sounds/disconnected.mp3');
+            const disconnected = new Audio('sounds/disconnected.mp3');
             disconnected.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -129,7 +129,7 @@ const Tablero = ({ volumen, setVolumen }) => {
     };
 
     const seleccionarPregunta = (topicoIndex, preguntaIndex) => {
-        const disable = new Audio('/sounds/notification-disable.mp3');
+        const disable = new Audio('sounds/notification-disable.mp3');
         if (!turno || bloqueoActivo) {
             if (volumen) {
                 disable.play().catch((e) => {
@@ -154,7 +154,7 @@ const Tablero = ({ volumen, setVolumen }) => {
             return;
         }
         if (volumen) {
-            const click = new Audio('/sounds/keyboard-click.mp3');
+            const click = new Audio('sounds/keyboard-click.mp3');
             click.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });

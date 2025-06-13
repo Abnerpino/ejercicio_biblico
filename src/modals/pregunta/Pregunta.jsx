@@ -24,7 +24,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const responder = (value) => {
         if (volumen) {
-            const sonido = new Audio(value ? '/sounds/correct-ding.mp3' : '/sounds/negative_beeps.mp3');
+            const sonido = new Audio(value ? 'sounds/correct-ding.mp3' : 'sounds/negative_beeps.mp3');
             sonido.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -60,7 +60,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const verRespuesta = () => {
         if (volumen) {
-            const show = new Audio('/sounds/show.mp3');
+            const show = new Audio('sounds/show.mp3');
             show.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -71,7 +71,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const roboPuntos = () => {
         if (volumen) {
-            const robo = new Audio('/sounds/robo.mp3');
+            const robo = new Audio('sounds/robo.mp3');
             robo.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
