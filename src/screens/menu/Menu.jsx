@@ -36,7 +36,24 @@ const Menu = ({ volumen, setVolumen }) => {
   const opcionesEquipos = [1, 2, 3, 4, 5];
 
   // Función para manejar selección de equipos
-  const seleccionarEquipos = (num) => {
+  const seleccionarEquipos = (habilitado, num) => {
+    if (!habilitado) {
+      if (volumen) {
+        const notSelection = new Audio('/sounds/not-selection.mp3');
+        notSelection.play().catch((e) => {
+          console.warn('No se pudo reproducir el sonido:', e);
+        });
+      }
+      return;
+    }
+
+    if (volumen) {
+      const click = new Audio('/sounds/click.mp3');
+      click.play().catch((e) => {
+        console.warn('No se pudo reproducir el sonido:', e);
+      });
+    }
+
     setConfig(prev => ({ ...prev, equipos: num }));
   };
 
@@ -304,8 +321,7 @@ const Menu = ({ volumen, setVolumen }) => {
                 return (
                   <button
                     key={num}
-                    onClick={() => habilitado && seleccionarEquipos(num)}
-                    disabled={!habilitado}
+                    onClick={() => seleccionarEquipos(habilitado, num)}
                     style={{
                       padding: '8px 12px',
                       cursor: habilitado ? 'pointer' : 'not-allowed',
