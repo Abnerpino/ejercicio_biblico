@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookBible, faTrashCan, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
@@ -18,6 +18,8 @@ const archivoOriginal = {
   topicos: [...new Set(preguntasJSON.map(j => j.topico))],
   total: preguntasJSON.reduce((acc, j) => acc + j.preguntas.length, 0)
 };
+
+const { ipcRenderer } = window.require('electron');
 
 const Menu = ({ volumen, setVolumen }) => {
   const [archivos, setArchivos] = useState([]);
@@ -367,6 +369,12 @@ const Menu = ({ volumen, setVolumen }) => {
             )
           }
         </div>
+        <FontAwesomeIcon
+          icon={faRightFromBracket}
+          title='Salir'
+          onClick={() => ipcRenderer.send('cerrar-app')}
+          cursor='pointer'
+        />
       </div>
 
       <Mensaje
