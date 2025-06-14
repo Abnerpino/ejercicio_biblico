@@ -25,6 +25,7 @@
 .paneles {
   display: flex;
   gap: 2rem;
+  margin-top: 25px;
   height: 300px; /* Altura fija o máxima común para ambos paneles */
 }
 
@@ -40,12 +41,14 @@
 
 /* Estilo de contenedor scrollable */
 .archivo-lista {
-  background: white;
+  background: #f8f8ff;
   overflow-y: auto;
   flex-grow: 1; /* Para que ocupe todo el espacio vertical restante */
   display: flex;
   flex-direction: column;
   padding-top: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* Encabezado fijo */
@@ -53,7 +56,7 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
-  background-color: #ccc;
+  background-color: #bdb76b;
   border-bottom: 1px solid black;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -105,7 +108,7 @@ input[type="number"] {
 }
 
 .btn-empezar {
-  margin-top: 22.5px;
+  margin-top: 50px;
   padding: 1rem 2rem;
   background-color: #007bff;
   color: white;
@@ -119,7 +122,7 @@ input[type="number"] {
 .ayuda-etiquetas {
   display: flex;
   justify-content: space-between;
-  margin-top: 27.5px;
+  margin-top: 50px;
   font-family:'Times New Roman', Times, serif ;
   font-size: 17px;
 }
