@@ -308,13 +308,13 @@ const Menu = ({ volumen, setVolumen }) => {
         <div className="panel config-panel">
           <p className='titulo-configs'>Configuraciones Iniciales</p>
           <div className='div-configs'>
-            <label>Tiempo inicial (s):
+            <label className='panel-etiqueta'>Tiempo inicial (s):
               <input type="number" min={15} value={config.tiempoInicial} onChange={(e) => setConfig({ ...config, tiempoInicial: +e.target.value })} />
             </label>
-            <label>Incremento por puntaje (s):
+            <label className='panel-etiqueta'>Incremento por puntaje (s):
               <input type="number" min={5} value={config.incremento} onChange={(e) => setConfig({ ...config, incremento: +e.target.value })} />
             </label>
-            <label>Número de equipos:</label>
+            <label className='panel-etiqueta'>Número de equipos:</label>
             <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '8px' }}>
               {opcionesEquipos.map((num) => {
                 const habilitado = totalPreguntas > 0 && (totalPreguntas % num === 0);
