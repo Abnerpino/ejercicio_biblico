@@ -33,6 +33,10 @@
   text-anchor: middle;
   dominant-baseline: middle;
   alignment-baseline: middle;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 /* Animación que recorre el strokeDashoffset desde 0 a 283 */

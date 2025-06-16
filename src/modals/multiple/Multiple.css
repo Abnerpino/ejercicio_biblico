@@ -104,6 +104,11 @@
     font-family: auto;
     padding-top: 1px;
     padding-bottom: 1px;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Estándar */
+
 }
 
 .text-about {
@@ -145,11 +150,25 @@
     white-space: pre;
     margin: 0;                 /* Quita márgenes para mejor ajuste */
     overflow-x: auto;          /* Scroll horizontal si es necesario */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Estándar */
+
 }
 
 .div-links {
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 5px;
+}
+
+.btn-save {
+    width: 200px;
+    padding: 5px;
+    align-self: anchor-center;
+    background-color: #00ffff;
+    border: solid 1px black;
 }
 
 .copy-icon {
