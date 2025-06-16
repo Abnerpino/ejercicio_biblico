@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faFileCirclePlus, faCircleInfo, faCircleXmark, faCopy, faCode, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faFileCirclePlus, faCircleInfo, faCircleXmark, faCopy, faCode, faEnvelope, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import './Multiple.css';
 
 const data = [
@@ -44,6 +44,8 @@ const data = [
     }
 ];
 
+const { ipcRenderer } = window.require('electron');
+
 const Multiple = ({ modal, onCerrar }) => {
     const [showNotification, setShowNotification] = useState(false);
 
@@ -55,6 +57,15 @@ const Multiple = ({ modal, onCerrar }) => {
             .catch(err => {
                 alert("Error al copiar: ", err);
             });
+    };
+
+    const guardarArchivoJson = async () => {
+        const resultado = await ipcRenderer.invoke('guardar-json');
+        console.log(resultado);
+        const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
+        sonido.play().catch((e) => {
+            console.warn('No se pudo reproducir el sonido:', e);
+        });
     };
 
     // Ocultar la notificación después de 2 segundos
@@ -95,7 +106,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <br></br>
                 <p className='text-subtitulo'>Todo Listo</p>
                 <p className='text-message'>Una vez seleccionado el archivo de preguntas a usar y establecidas las configuraciones iniciales, pulsa el botón "Comenzar".</p>
-                <p className='text-message'>ADICIONAL: Para activar o desactivar los sonidos del juego, pulse sobre el icono de Sonido.</p>
+                <p className='text-message'><b>Adicional:</b> Para activar o desactivar los sonidos del juego, pulse sobre el icono de Sonido.</p>
                 <p className='text-message'>Una vez presionado el botón "Comenzar", se mostrará el tablero del juego: botón de inicio, tópicos y puntajes de las preguntas. Al presionar el botón "Iniciar Juego", se mostrará una pequeña ventana en donde aparecerá el orden de turnos de cada equipo (se elegirá aleatoriamente y se mostrará solo si hay más de un equipo) y un botón de "Continuar" para empezar a contestar las preguntas.</p>
                 <p className='text-message'>En el tablero ya se mostrarán los equipos y el equipo en turno se iluminará en color anaranjado.</p>
                 <p className='text-message'>Cuando seleccione la cantidad de puntos que desea ganar, se mostrará una pequeña ventana con: un temporizador que iniciará la cuenta regresiva automáticamente, la pregunta y un botón para mostrar la respuesta.</p>
@@ -106,7 +117,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>El juego acaba cuando se terminan las preguntas o se presiona el botón "Terminar Juego". Inmediatamente se mostrará una ventana que anuncia al ganador (o un empate, si es el caso) juntamente con una gráfica de los puntajes de cada equipo y un botón para volver al Menú.</p>
             </div>
         </div>
-    ;
+        ;
 
     const howAddQuetions =
         <div className='div-contenido'>
@@ -157,12 +168,31 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>Puede hacer su archivo JSON en el Bloc de Notas de su PC, solo recuerde que al guardarlo, debe quitar la extensión '.txt' (de Archivo de Texto) y reemplazarla por '.json' (de Archivo JSON).</p>
                 <p className='text-message'>En las siguientes páginas puede consultar más a detalle cómo crear un archivo JSON y cómo validarlo para saber si es correcto:</p>
                 <div className='div-links'>
-                    <a href="https://leapcell.io/blog/how-to-make-a-json-file" target="_blank">Cómo crear un archivo JSON</a>
-                    <a href="https://jsononline.net/es/json-validator" target="_blank">Validador JSON</a>
+                    <a
+                        href="https://leapcell.io/blog/how-to-make-a-json-file"
+                        target="_blank"
+                        title='Abrir en el navegador'
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Cómo crear un archivo JSON
+                    </a>
+                    <a
+                        href="https://jsononline.net/es/json-validator"
+                        target="_blank"
+                        title='Abrir en el navegador'
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Validador JSON
+                    </a>
                 </div>
+                <p className='text-message'>De igual manera, si desea usar el archivo JSON de preguntas que viene por defecto en el juego y editarlo para hacer el trabajo más fácil, puede obtenerlo pulsando en el botón de abajo:</p>
+                <button className='btn-save' onClick={guardarArchivoJson}>
+                    <FontAwesomeIcon icon={faFloppyDisk} style={{ marginRight: "5px" }} />
+                    Guardar archivo JSON
+                </button>
             </div>
         </div>
-    ;
+        ;
 
     const about =
         <div className='div-contenido'>
@@ -179,19 +209,19 @@ const Multiple = ({ modal, onCerrar }) => {
                 />
             </div>
             <div className='modal-mensaje'>
-                <p className='text-about'>Este "Ejercicio Bíblico" fue hecho con la finalidad de incentivar el estudio de la Palabra de Dios. Si fallaste en alguna pregunta, no te preocupes, puedes leer la cita y memorizar la respuesta, pero si acertaste en todas las preguntas, felicidades, eso indica que estudias tu Biblia. Te invito a que sigas leyendola para profundizar más en el conocimiento de la Palabra de Dios.</p>
+                <p className='text-about'>Este "Ejercicio Bíblico" de preguntas y respuestas fue hecho con la finalidad de incentivar el estudio de la Palabra de Dios. Si fallaste en alguna pregunta, no te preocupes, puedes leer la cita y memorizar la respuesta, pero si acertaste en todas las preguntas, felicidades, eso indica que estudias tu Biblia. Te invito a que sigas leyendola para profundizar más en el conocimiento de la Palabra de Dios.</p>
                 <div className='div-info'>
-                    <FontAwesomeIcon icon={faCode} style={{marginRight: "5px"}} />
+                    <FontAwesomeIcon icon={faCode} style={{ marginRight: "5px" }} />
                     <p className='text-about'><b>Desarrollador:</b> Ing. Abner Pino Federico</p>
                 </div>
                 <div className='div-info'>
-                    <FontAwesomeIcon icon={faEnvelope} style={{marginRight: "5px"}} />
+                    <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: "5px" }} />
                     <p className='text-about'><b>Contacto:</b> abnerpino15@gmail.com</p>
                 </div>
                 <p className='text-versiculo'>"Escudriñad las Escrituras; porque a vosotros os parece que en ellas tenéis la vida eterna; y ellas son las que dan testimonio de mí." - San Juan 5:39</p>
             </div>
         </div>
-    ;
+        ;
 
     return (
         <div className="modal">
