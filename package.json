@@ -1,14 +1,36 @@
 {
   "name": "ejercicio_biblico",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Ejercicio Bíblico de preguntas y respuestas.",
+  "author": "Ing. Abner Pino Federico <abner@example.com>",
   "type": "module",
   "main": "main.cjs",
+  "build": {
+    "appId": "com.ejercicio_biblico",
+    "productName": "Ejercicio Bíblico",
+    "directories": {
+      "buildResources": "public"
+    },
+    "files": [
+      "dist/**/*",
+      "main.cjs",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "public/iasd.ico",
+      "legalTrademarks": "© 2025 Abner Pino Federico"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "electron": "electron ."
+    "electron": "electron .",
+    "start": "npm run build && npm run electron",
+    "dist": "npm run build && electron-builder"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -27,6 +49,7 @@
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "electron": "^36.4.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
