@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faBookBible, faTrashCan, faFileCirclePlus, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
@@ -61,6 +61,52 @@ const Menu = ({ volumen, setVolumen }) => {
     const guardados = cargarArchivosGuardados();
     setArchivos([archivoOriginal, ...guardados]);
   }, []);
+
+  const saveJSONFile = () => {
+    let jsonFile;
+    const files = cargarArchivosGuardados(); // tu función para cargar archivos
+    if (archivoSeleccionado === 'original') {
+      jsonFile = {
+        nombre: 'Preguntas_Original',
+        contenido: preguntasJSON,
+      };
+    } else {
+      jsonFile = files.find(f => f.id === archivoSeleccionado);
+    }
+    if (!jsonFile) {
+      if (volumen) {
+        const error = new Audio('sounds/cancel.mp3');
+        error.play().catch(e => {
+          console.warn('No se pudo reproducir el sonido:', e);
+        });
+      }
+      return;
+    }
+
+    // Convertir el objeto JSON a texto formateado
+    const jsonString = JSON.stringify(jsonFile.contenido, null, 2);
+    // Crear un Blob con el contenido JSON y el tipo MIME adecuado
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    // Crear un URL para el Blob
+    const url = URL.createObjectURL(blob);
+    // Crear un elemento <a> temporal para disparar la descarga
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${jsonFile.nombre}.json`;
+    // Añadir el enlace al DOM, disparar clic y luego eliminarlo
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    // Liberar el objeto URL para evitar fugas de memoria
+    URL.revokeObjectURL(url);
+    if (volumen) {
+      const save = new Audio('sounds/save.mp3');
+      save.play().catch(e => {
+        console.warn('No se pudo reproducir el sonido:', e);
+      });
+    }
+  };
+
 
   const handleAgregarArchivo = async (e) => {
     const archivo = e.target.files[0];
@@ -271,7 +317,7 @@ const Menu = ({ volumen, setVolumen }) => {
             <div className='div-icons'>
               <FontAwesomeIcon
                 icon={faFloppyDisk}
-                //onClick={saveJSONFile}
+                onClick={saveJSONFile}
                 title='Guardar archivo'
                 style={{ cursor: 'pointer', fontSize: '18px' }}
               />
@@ -373,12 +419,6 @@ const Menu = ({ volumen, setVolumen }) => {
             )
           }
         </div>
-        <FontAwesomeIcon
-          icon={faRightFromBracket}
-          //onClick={() => ipcRenderer.send('cerrar-app')}
-          title='Salir'
-          cursor='pointer'
-        />
       </div>
 
       <Mensaje
