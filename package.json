@@ -30,7 +30,7 @@
     "build": "vite build",
     "electron": "electron .",
     "start": "npm run build && npm run electron",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && npx electron-builder"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -48,7 +48,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
-    "electron": "^36.4.0",
+    "electron": "36.4.0",
     "electron-builder": "^26.0.12",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
