@@ -77,7 +77,6 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     const resultado = await ipcRenderer.invoke('guardar-json', jsonFile);
-    console.log(resultado);
     const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
     sonido.play().catch((e) => {
       console.warn('No se pudo reproducir el sonido:', e);

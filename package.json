@@ -8,7 +8,7 @@
   "main": "main.cjs",
   "build": {
     "appId": "com.ejercicio_biblico",
-    "productName": "Ejercicio Bíblico",
+    "productName": "¿Qué tanto sabes de la Biblia?",
     "directories": {
       "buildResources": "public"
     },

@@ -18,7 +18,7 @@ function createWindow() {
   if (isDev) {
     // En desarrollo, carga desde Vite
     win.loadURL('http://localhost:5173');
-    win.webContents.openDevTools(); // Opcional: ver consola de navegador
+  //  win.webContents.openDevTools(); // Opcional: ver consola de navegador
   } else {
     // En producción, carga desde dist
     win.loadFile(path.join(__dirname, 'dist', 'index.html'));
