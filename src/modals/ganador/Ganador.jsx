@@ -69,7 +69,7 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
                 </div>
 
                 {/* Gráfica de barras */}
-                <div style={{ marginTop: '20px', width: '100%', height: 250 }}>
+                <div className='div-grafica'>
                     <ResponsiveContainer>
                         <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                             <XAxis dataKey="name" />

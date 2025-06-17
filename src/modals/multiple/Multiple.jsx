@@ -84,8 +84,9 @@ const Multiple = ({ modal, onCerrar }) => {
                 <br></br>
                 <p className='text-subtitulo'>Archivos de Preguntas</p>
                 <p className='text-message'>Por defecto ya viene cargado un archivo de preguntas, pero tú puedes agregar tu archivo con tus propias preguntas, para ello solo pulsa en el icono de "Agregar archivo" y seleccionalo.</p>
-                <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "¿Cómo agrego mis preguntas?" que se encuentra en el Menú principal.</p>
+                <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "<b>¿Cómo agrego mis preguntas?</b>" que se encuentra en el Menú principal.</p>
                 <p className='text-message'>Si ya agregaste algún archivo de preguntas y quieres eliminarlo, solo presiona el icono de "Eliminar archivo". ¡El archivo de preguntas que viene cargado por defecto no se puede eliminar!</p>
+                <p className='text-message'>También puedes guardar en tus documentos el archivo original de preguntas o algún otro archivo que haya sido cargado antes. Para ello solo pulsa en el icono de "Guardar archivo" y se mostrará una ventana para seleccionar la ubicación en la que guardarás el archivo y si deseas, también puedes cambiarle el nombre.</p>
                 <br></br>
                 <p className='text-subtitulo'>Configuraciones Iniciales</p>
                 <p className='text-message'>El tiempo inicial se refiere al "tiempo base" que tiene cada pregunta, el cual por defecto es de 30 segundos y no puede ser menor a 15 segundos.</p>
@@ -95,17 +96,18 @@ const Multiple = ({ modal, onCerrar }) => {
                 <br></br>
                 <p className='text-subtitulo'>Todo Listo</p>
                 <p className='text-message'>Una vez seleccionado el archivo de preguntas a usar y establecidas las configuraciones iniciales, pulsa el botón "Comenzar".</p>
-                <p className='text-message'>Se mostrará el tablero del juego: botón de inicio, tópicos y puntajes de las preguntas. Al presionar el botón "Iniciar Juego", se mostrará una pequeña ventana en donde aparecerá el orden de turnos de cada equipo (se elegirá aleatoriamente y se mostrará solo si hay más de un equipo) y un botón de "Continuar" para empezar a contestar las preguntas.</p>
-                <p className='text-message'>En el tablero ya se mostrarán los equipos y el equipo en turno se iluminará en color anaranjado.</p>
+                <p className='text-message'><b>Adicional:</b> Para activar o desactivar los sonidos del juego, pulsa sobre el icono de Sonido.</p>
+                <p className='text-message'>Una vez presionado el botón "Comenzar", se mostrará el tablero del juego: botón de inicio, tópicos y puntajes de las preguntas. Al presionar el botón "Iniciar Juego", se mostrará una pequeña ventana en donde aparecerá el orden de turnos de cada equipo (se elegirá aleatoriamente y se mostrará solo si hay más de un equipo) y un botón de "Continuar" para empezar a contestar las preguntas.</p>
+                <p className='text-message'>Después de presionar el botón para continuar, en el tablero ya se mostrarán los equipos y el equipo en turno se iluminará en color anaranjado.</p>
                 <p className='text-message'>Cuando seleccione la cantidad de puntos que desea ganar, se mostrará una pequeña ventana con: un temporizador que iniciará la cuenta regresiva automáticamente, la pregunta y un botón para mostrar la respuesta.</p>
                 <p className='text-message'>Puede esperar a que termine el tiempo para mostrar la respuesta o hacerlo antes. Al presionar el botón (si aún quedaba tiempo, este llegará a 0 inmediatamente), aparecerá la respuesta, su cita bíblica (si aplica) y dos botones, uno por si la respuesta fue correcta y otro por si fue incorrecta.</p>
-                <p className='text-message'>Automáticamente se sumarán los puntos si la respuesta fue correcta (no se restan si fue incorrecta) y se mostrará nuevamente el tablero. Para evitar seleccionar alguna pregunta por accidente al cerrarse la ventana, hay un bloqueo de seguridad de 1 segundo, en el cual no se podrá elegir ninguna pregunta hasta que el siguiente equipo esté en turno.</p>
+                <p className='text-message'>Hay una opción para "Robar Puntos", la cual solo aparecerá si se deja correr el tiempo y este llega a 0 sin que antes se presione el botón de "Mostrar Respuesta". Solo puede hacer el robo de puntos el equipo que tendrá el siguiente turno, para activarlo solo se debe pulsar el botón y ya estará implementada dicha funcionalidad. ¡Importante! Cuando el equipo con el turno siguiente activa el robo de puntos, si su respuesta es correcta, se le suman los puntos, pero si es incorrecta, también se le restarán los puntos.</p>
+                <p className='text-message'>Si no se activó el robo de puntos, automáticamente se sumarán los puntos al equipo en turno si la respuesta fue correcta pero si fue incorrecta, no se restarán (eso solo aplica para los equipos que activen el robo de puntos) y se mostrará nuevamente el tablero. Para evitar seleccionar alguna pregunta por accidente al cerrarse la ventana, hay un bloqueo de seguridad de 1 segundo, en el cual no se podrá elegir ninguna pregunta hasta que el siguiente equipo esté en turno.</p>
+                <p className='text-message'>La idea del juego es que el equipo en turno conteste la pregunta antes de que el tiempo termine, pero si termina el tiempo y no se recibe alguna respuesta, el equipo con el siguiente turno podrá hacer el robo de puntos. En cualquiera de ambos casos, el no recibir una respuesta se debe considerar como respuesta incorrecta.</p>
                 <p className='text-message'>El juego acaba cuando se terminan las preguntas o se presiona el botón "Terminar Juego". Inmediatamente se mostrará una ventana que anuncia al ganador (o un empate, si es el caso) juntamente con una gráfica de los puntajes de cada equipo y un botón para volver al Menú.</p>
-                <p className='text-message'>Para activar o desactivar los sonidos del juego, pulse sobre el icono de Sonido.</p>
-                <p className='text-message'><b>Nota:</b> No se requiere de una conexión a Internet para poder jugar.</p>
             </div>
         </div>
-    ;
+        ;
 
     const howAddQuetions =
         <div className='div-contenido'>
@@ -156,12 +158,27 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>Puede hacer su archivo JSON en el Bloc de Notas de su PC, solo recuerde que al guardarlo, debe quitar la extensión '.txt' (de Archivo de Texto) y reemplazarla por '.json' (de Archivo JSON).</p>
                 <p className='text-message'>En las siguientes páginas puede consultar más a detalle cómo crear un archivo JSON y cómo validarlo para saber si es correcto:</p>
                 <div className='div-links'>
-                    <a href="https://leapcell.io/blog/how-to-make-a-json-file" target="_blank">Cómo crear un archivo JSON</a>
-                    <a href="https://jsononline.net/es/json-validator" target="_blank">Validador JSON</a>
+                    <a
+                        href="https://leapcell.io/blog/how-to-make-a-json-file"
+                        target="_blank"
+                        title='Abrir en una nueva pestaña'
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Cómo crear un archivo JSON
+                    </a>
+                    <a
+                        href="https://jsononline.net/es/json-validator"
+                        target="_blank"
+                        title='Abrir en una nueva pestaña'
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Validador JSON
+                    </a>
                 </div>
+                <p className='text-message'>De igual manera, si desea usar el archivo JSON de preguntas que viene por defecto en el juego (o cualquier otro que haya sido cargado antes) y editarlo para hacer el trabajo más fácil, puede obtenerlo pulsando en el icono de "Guardar archivo" que aparece arriba de la lista de Archivos de Preguntas cargados.</p>
             </div>
         </div>
-    ;
+        ;
 
     const about =
         <div className='div-contenido'>
@@ -180,17 +197,17 @@ const Multiple = ({ modal, onCerrar }) => {
             <div className='modal-mensaje'>
                 <p className='text-about'>Este "Ejercicio Bíblico" fue hecho con la finalidad de incentivar el estudio de la Palabra de Dios. Si fallaste en alguna pregunta, no te preocupes, puedes leer la cita y memorizar la respuesta, pero si acertaste en todas las preguntas, felicidades, eso indica que estudias tu Biblia. Te invito a que sigas leyendola para profundizar más en el conocimiento de la Palabra de Dios.</p>
                 <div className='div-info'>
-                    <FontAwesomeIcon icon={faCode} style={{marginRight: "5px"}} />
+                    <FontAwesomeIcon icon={faCode} style={{ marginRight: "5px" }} />
                     <p className='text-about'><b>Desarrollador:</b> Ing. Abner Pino Federico</p>
                 </div>
                 <div className='div-info'>
-                    <FontAwesomeIcon icon={faEnvelope} style={{marginRight: "5px"}} />
+                    <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: "5px" }} />
                     <p className='text-about'><b>Contacto:</b> abnerpino15@gmail.com</p>
                 </div>
                 <p className='text-versiculo'>"Escudriñad las Escrituras; porque a vosotros os parece que en ellas tenéis la vida eterna; y ellas son las que dan testimonio de mí." - San Juan 5:39</p>
             </div>
         </div>
-    ;
+        ;
 
     return (
         <div className="modal">
