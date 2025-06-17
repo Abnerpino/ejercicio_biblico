@@ -31,15 +31,12 @@ function createWindow() {
   });
 
   // Manejar solicitud para guardar archivo JSON
-  ipcMain.handle('guardar-json', async () => {
+  ipcMain.handle('guardar-json', async (event, archivoJSON) => {
     try {
-      // Ruta del archivo JSON original dentro de la app
-      const jsonPath = path.join(__dirname, 'src', 'data', 'preguntas.json');
-
       // Mostrar diálogo para elegir dónde guardar
       const { filePath, canceled } = await dialog.showSaveDialog(win, {
         title: 'Guardar archivo JSON',
-        defaultPath: path.join(app.getPath('downloads'), 'Preguntas_Original.json'),
+        defaultPath: path.join(app.getPath('downloads'), `${archivoJSON.nombre}.json`),
         filters: [{ name: 'JSON Files', extensions: ['json'] }]
       });
 
@@ -47,11 +44,8 @@ function createWindow() {
         return false;
       }
 
-      // Leer contenido del archivo original
-      const data = await fs.promises.readFile(jsonPath, 'utf8');
-
       // Escribir en la ruta elegida por el usuario
-      await fs.promises.writeFile(filePath, data, 'utf8');
+      await fs.promises.writeFile(filePath, JSON.stringify(archivoJSON.contenido, null, 2), 'utf8');
 
       return true;
     } catch (error) {
