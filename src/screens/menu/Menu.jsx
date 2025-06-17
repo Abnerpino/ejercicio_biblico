@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookBible, faTrashCan, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
@@ -270,6 +270,12 @@ const Menu = ({ volumen, setVolumen }) => {
             </div>
             <div className='div-icons'>
               <FontAwesomeIcon
+                icon={faFloppyDisk}
+                //onClick={saveJSONFile}
+                title='Guardar archivo'
+                style={{ cursor: 'pointer', fontSize: '18px' }}
+              />
+              <FontAwesomeIcon
                 icon={faFileCirclePlus}
                 onClick={() => inputRef.current?.click()}
                 title="Agregar archivo"
@@ -306,13 +312,13 @@ const Menu = ({ volumen, setVolumen }) => {
         <div className="panel config-panel">
           <p className='titulo-configs'>Configuraciones Iniciales</p>
           <div className='div-configs'>
-            <label>Tiempo inicial (s):
+            <label className='panel-etiqueta'>Tiempo inicial (s):
               <input type="number" min={15} value={config.tiempoInicial} onChange={(e) => setConfig({ ...config, tiempoInicial: +e.target.value })} />
             </label>
-            <label>Incremento por puntaje (s):
+            <label className='panel-etiqueta'>Incremento por puntaje (s):
               <input type="number" min={5} value={config.incremento} onChange={(e) => setConfig({ ...config, incremento: +e.target.value })} />
             </label>
-            <label>Número de equipos:</label>
+            <label className='panel-etiqueta'>Número de equipos:</label>
             <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '8px' }}>
               {opcionesEquipos.map((num) => {
                 const habilitado = totalPreguntas > 0 && (totalPreguntas % num === 0);
@@ -367,6 +373,12 @@ const Menu = ({ volumen, setVolumen }) => {
             )
           }
         </div>
+        <FontAwesomeIcon
+          icon={faRightFromBracket}
+          //onClick={() => ipcRenderer.send('cerrar-app')}
+          title='Salir'
+          cursor='pointer'
+        />
       </div>
 
       <Mensaje
