@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faEye } from '@fortawesome/free-solid-svg-icons';
 import Robo from '../../assets/robbery.svg?react';
 import Timer from '../../components/timer';
+import sonidoCorrectDing from '../../../public/sounds/correct-ding.mp3';
+import sonidoNegativeBeeps from '../../../public/sounds/negative_beeps.mp3';
+import sonidoShow from '../../../public/sounds/show.mp3';
+import sonidoRobo from '../../../public/sounds/robo.mp3';
 import './Pregunta.css';
 
 const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos }) => {
@@ -24,7 +28,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const responder = (value) => {
         if (volumen) {
-            const sonido = new Audio(value ? '/sounds/correct-ding.mp3' : '/sounds/negative_beeps.mp3');
+            const sonido = new Audio(value ? sonidoCorrectDing : sonidoNegativeBeeps);
             sonido.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -60,7 +64,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const verRespuesta = () => {
         if (volumen) {
-            const show = new Audio('/sounds/show.mp3');
+            const show = new Audio(sonidoShow);
             show.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -71,7 +75,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const roboPuntos = () => {
         if (volumen) {
-            const robo = new Audio('/sounds/robo.mp3');
+            const robo = new Audio(sonidoRobo);
             robo.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });

@@ -3,6 +3,8 @@ import { BarChart, Bar, XAxis, YAxis, LabelList, ResponsiveContainer, Cell } fro
 import confetti from 'canvas-confetti';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy, faHandshake } from '@fortawesome/free-solid-svg-icons';
+import sonidoDraw from '../../../public/sounds/draw.mp3';
+import sonidoWinners from '../../../public/sounds/winners.mp3';
 import './Ganador.css';
 
 const coloresBarras = ['#4169e1', '#32cd32', '#FF33A8', '#ff4500', '#8b0000'];
@@ -18,12 +20,12 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
 
         if (winner === 'Empate') {
             if (volumen) {
-                const draw = new Audio('/sounds/draw.mp3');
+                const draw = new Audio(sonidoDraw);
                 draw.play().catch(err => console.warn('Error al reproducir sonido de empate:', err));
             }
         } else {
             if (volumen) {
-                const winners = new Audio('/sounds/winners.mp3');
+                const winners = new Audio(sonidoWinners);
                 winners.play().catch(err => console.warn('Error al reproducir sonido de victoria:', err));
             }
 

@@ -10,6 +10,14 @@ import Archivo from '../../components/archivo';
 import Mensaje from '../../modals/mensaje';
 import Confirmacion from '../../modals/confirmacion';
 import Multiple from '../../modals/multiple';
+import sonidoNotSelection from '../../../public/sounds/not-selection.mp3';
+import sonidoClick from '../../../public/sounds/click.mp3';
+import sonidoCancel from '../../../public/sounds/cancel.mp3';
+import sonidoSave from '../../../public/sounds/save.mp3';
+import sonidoNotificationDisable from '../../../public/sounds/notification-disable.mp3';
+import sonidoInsert from '../../../public/sounds/insert.mp3';
+import sonidoRecycle from '../../../public/sounds/recycle.mp3';
+import sonidoConnect from '../../../public/sounds/connect.mp3';
 import './Menu.css';
 
 const archivoOriginal = {
@@ -39,7 +47,7 @@ const Menu = ({ volumen, setVolumen }) => {
   const seleccionarEquipos = (habilitado, num) => {
     if (!habilitado) {
       if (volumen) {
-        const notSelection = new Audio('/sounds/not-selection.mp3');
+        const notSelection = new Audio(sonidoNotSelection);
         notSelection.play().catch((e) => {
           console.warn('No se pudo reproducir el sonido:', e);
         });
@@ -48,7 +56,7 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     if (volumen) {
-      const click = new Audio('/sounds/click.mp3');
+      const click = new Audio(sonidoClick);
       click.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });
@@ -75,7 +83,7 @@ const Menu = ({ volumen, setVolumen }) => {
     }
     if (!jsonFile) {
       if (volumen) {
-        const error = new Audio('sounds/cancel.mp3');
+        const error = new Audio(sonidoCancel);
         error.play().catch(e => {
           console.warn('No se pudo reproducir el sonido:', e);
         });
@@ -100,7 +108,7 @@ const Menu = ({ volumen, setVolumen }) => {
     // Liberar el objeto URL para evitar fugas de memoria
     URL.revokeObjectURL(url);
     if (volumen) {
-      const save = new Audio('sounds/save.mp3');
+      const save = new Audio(sonidoSave);
       save.play().catch(e => {
         console.warn('No se pudo reproducir el sonido:', e);
       });
@@ -179,7 +187,7 @@ const Menu = ({ volumen, setVolumen }) => {
         // Mostrar errores si existen
         if (errores.length > 0) {
           if (volumen) {
-            const disable = new Audio('/sounds/notification-disable.mp3');
+            const disable = new Audio(sonidoNotificationDisable);
             disable.play().catch((e) => {
               console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -189,7 +197,7 @@ const Menu = ({ volumen, setVolumen }) => {
         }
 
         if (volumen) {
-          const insert = new Audio('/sounds/insert.mp3');
+          const insert = new Audio(sonidoInsert);
           insert.play().catch((e) => {
             console.warn('No se pudo reproducir el sonido:', e);
           });
@@ -234,7 +242,7 @@ const Menu = ({ volumen, setVolumen }) => {
     if (!confirmado) return; // El usuario canceló
 
     if (volumen) {
-      const recycle = new Audio('/sounds/recycle.mp3');
+      const recycle = new Audio(sonidoRecycle);
       recycle.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });
@@ -275,7 +283,7 @@ const Menu = ({ volumen, setVolumen }) => {
     // Mostrar errores si existen
     if (errores.length > 0) {
       if (volumen) {
-        const disable = new Audio('/sounds/notification-disable.mp3');
+        const disable = new Audio(sonidoNotificationDisable);
         disable.play().catch((e) => {
           console.warn('No se pudo reproducir el sonido:', e);
         });
@@ -285,7 +293,7 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     if (volumen) {
-      const connect = new Audio('/sounds/connect.mp3');
+      const connect = new Audio(sonidoConnect);
       connect.play().catch((e) => {
         console.warn('No se pudo reproducir el sonido:', e);
       });

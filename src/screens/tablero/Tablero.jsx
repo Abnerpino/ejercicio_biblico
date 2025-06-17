@@ -10,6 +10,10 @@ import Confirmacion from '../../modals/confirmacion';
 import Pregunta from '../../modals/pregunta';
 import Ganador from '../../modals/ganador';
 import preguntasJSON from '../../data/preguntas.json';
+import sonidoStartGame from '../../../public/sounds/start-game.mp3';
+import sonidoDisconnected from '../../../public/sounds/disconnected.mp3';
+import sonidoNotificationDisable from '../../../public/sounds/notification-disable.mp3';
+import sonidoKeyboardClick from '../../../public/sounds/keyboard-click.mp3';
 import './Tablero.css';
 
 const Tablero = ({ volumen, setVolumen }) => {
@@ -64,7 +68,7 @@ const Tablero = ({ volumen, setVolumen }) => {
 
     const iniciarJuego = () => {
         if (volumen) {
-            const start = new Audio('/sounds/start-game.mp3');
+            const start = new Audio(sonidoStartGame);
             start.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -117,7 +121,7 @@ const Tablero = ({ volumen, setVolumen }) => {
             if (!confirmado) return; // El usuario canceló
         }
         if (volumen) {
-            const disconnected = new Audio('/sounds/disconnected.mp3');
+            const disconnected = new Audio(sonidoDisconnected);
             disconnected.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
@@ -129,7 +133,7 @@ const Tablero = ({ volumen, setVolumen }) => {
     };
 
     const seleccionarPregunta = (topicoIndex, preguntaIndex) => {
-        const disable = new Audio('/sounds/notification-disable.mp3');
+        const disable = new Audio(sonidoNotificationDisable);
         if (!turno || bloqueoActivo) {
             if (volumen) {
                 disable.play().catch((e) => {
@@ -154,7 +158,7 @@ const Tablero = ({ volumen, setVolumen }) => {
             return;
         }
         if (volumen) {
-            const click = new Audio('/sounds/keyboard-click.mp3');
+            const click = new Audio(sonidoKeyboardClick);
             click.play().catch((e) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });

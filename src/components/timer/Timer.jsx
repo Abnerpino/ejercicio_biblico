@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import sonidoTimer from '../../../public/sounds/timer.mp3';
 import './Timer.css';
 
 const Timer = ({ segundos, detener, volumen, onUpdate }) => {
@@ -110,7 +111,7 @@ const Timer = ({ segundos, detener, volumen, onUpdate }) => {
           {tiempoRestante}s
         </text>
       </svg>
-      <audio ref={sonidoRef} src="/sounds/timer.mp3" preload="auto" />
+      <audio ref={sonidoRef} src={sonidoTimer} preload="auto" />
     </div>
   );
 };
