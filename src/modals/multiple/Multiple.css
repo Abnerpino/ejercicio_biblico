@@ -163,14 +163,6 @@
     margin-bottom: 5px;
 }
 
-.btn-save {
-    width: 200px;
-    padding: 5px;
-    align-self: anchor-center;
-    background-color: #00ffff;
-    border: solid 1px black;
-}
-
 .copy-icon {
     position: absolute;
     top: 10px;

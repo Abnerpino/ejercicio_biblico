@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faFileCirclePlus, faCircleInfo, faCircleXmark, faCopy, faCode, faEnvelope, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faFileCirclePlus, faCircleInfo, faCircleXmark, faCopy, faCode, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import './Multiple.css';
 
 const data = [
@@ -44,8 +44,6 @@ const data = [
     }
 ];
 
-const { ipcRenderer } = window.require('electron');
-
 const Multiple = ({ modal, onCerrar }) => {
     const [showNotification, setShowNotification] = useState(false);
 
@@ -57,15 +55,6 @@ const Multiple = ({ modal, onCerrar }) => {
             .catch(err => {
                 alert("Error al copiar: ", err);
             });
-    };
-
-    const guardarArchivoJson = async () => {
-        const resultado = await ipcRenderer.invoke('guardar-json');
-        console.log(resultado);
-        const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
-        sonido.play().catch((e) => {
-            console.warn('No se pudo reproducir el sonido:', e);
-        });
     };
 
     // Ocultar la notificación después de 2 segundos
@@ -95,8 +84,9 @@ const Multiple = ({ modal, onCerrar }) => {
                 <br></br>
                 <p className='text-subtitulo'>Archivos de Preguntas</p>
                 <p className='text-message'>Por defecto ya viene cargado un archivo de preguntas, pero tú puedes agregar tu archivo con tus propias preguntas, para ello solo pulsa en el icono de "Agregar archivo" y seleccionalo.</p>
-                <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "¿Cómo agrego mis preguntas?" que se encuentra en el Menú principal.</p>
+                <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "<b>¿Cómo agrego mis preguntas?</b>" que se encuentra en el Menú principal.</p>
                 <p className='text-message'>Si ya agregaste algún archivo de preguntas y quieres eliminarlo, solo presiona el icono de "Eliminar archivo". ¡El archivo de preguntas que viene cargado por defecto no se puede eliminar!</p>
+                <p className='text-message'>También puedes guardar en tus documentos, el archivo original de preguntas o algún otro archivo que haya sido cargado antes. Para ello solo tiene que pulsar en el icono de "Guardar archivo" y se mostrará una ventana para seleccionar la ubicación en la que guardarás el archivo y si deseas cambiarle el nombre.</p>
                 <br></br>
                 <p className='text-subtitulo'>Configuraciones Iniciales</p>
                 <p className='text-message'>El tiempo inicial se refiere al "tiempo base" que tiene cada pregunta, el cual por defecto es de 30 segundos y no puede ser menor a 15 segundos.</p>
@@ -185,11 +175,7 @@ const Multiple = ({ modal, onCerrar }) => {
                         Validador JSON
                     </a>
                 </div>
-                <p className='text-message'>De igual manera, si desea usar el archivo JSON de preguntas que viene por defecto en el juego y editarlo para hacer el trabajo más fácil, puede obtenerlo pulsando en el botón de abajo:</p>
-                <button className='btn-save' onClick={guardarArchivoJson}>
-                    <FontAwesomeIcon icon={faFloppyDisk} style={{ marginRight: "5px" }} />
-                    Guardar archivo JSON
-                </button>
+                <p className='text-message'>De igual manera, si desea usar el archivo JSON de preguntas que viene por defecto en el juego (o cualquier otro que haya sido cargado antes) y editarlo para hacer el trabajo más fácil, puede obtenerlo pulsando en el icono de "Guardar archivo" que aparece arriba de la lista de Archivos de Preguntas cargados.</p>
             </div>
         </div>
         ;
