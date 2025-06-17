@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background: antiquewhite;
+  background: #ffd700;
   border: 1px solid #ccc;
   padding-left: 10px;
   padding-right: 10px;
@@ -49,11 +49,16 @@
 }
 
 .archivo-topicos span {
-  background: #dfefff;
+  background: #0000cd;
   border: 1px solid #000;
   padding: 2.5px 5px;
   border-radius: 6px;
   font-size: 10px;
+  color: #fff;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 .archivo-footer {
@@ -61,6 +66,7 @@
   margin-bottom: 5px;
   justify-content: left;
 }
+
 .archivo-total {
   margin-top: 0.5rem;
   font-size: 14px;
@@ -69,7 +75,7 @@
 
 /* Tamaño de la barra de scroll horizontal */
 .archivo-topicos::-webkit-scrollbar {
-  height: 8px; /* Tamaño suficiente para arrastrar */
+  height: 10px; /* Tamaño suficiente para arrastrar */
   background: transparent; /* Sin fondo visible */
 }
 
@@ -80,14 +86,4 @@
   min-height: 8px; /* Asegura que el thumb tenga altura suficiente */
   box-sizing: border-box;
   border: 0px solid #fff; /* Añade borde transparente para ampliar área clickeable */
-}
-
-/* Quitar el track (fondo del scroll) */
-.archivo-topicos::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05); /* Muy claro para mantener área clickeable */
-}
-
-/* Quitar las flechas (botones) */
-.archivo-topicos::-webkit-scrollbar-button {
-  display: none; /* Oculta las flechas */
 }

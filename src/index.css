@@ -16,6 +16,10 @@ a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 a:hover {
   color: #535bf2;
@@ -29,12 +33,7 @@ body {
   min-height: 100vh;
   align-content: center;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  background-color: #7fffd4;
 }
 
 button {
@@ -46,10 +45,18 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 p {
   all: initial;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 @media (prefers-color-scheme: light) {
@@ -61,7 +68,7 @@ p {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #7fffd4;
   }
 }
 

@@ -40,12 +40,29 @@
 
 /* Estilo de contenedor scrollable */
 .archivo-lista {
-  background: white;
+  background: #f8f8ff;
   overflow-y: auto;
   flex-grow: 1; /* Para que ocupe todo el espacio vertical restante */
   display: flex;
   flex-direction: column;
   padding-top: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Tamaño de la barra de scroll horizontal */
+.archivo-lista::-webkit-scrollbar {
+  height: 10px; /* Tamaño suficiente para arrastrar */
+  background: transparent; /* Sin fondo visible */
+}
+
+/* Estilo del "thumb" o barra que se mueve */
+.archivo-lista::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+  min-height: 8px; /* Asegura que el thumb tenga altura suficiente */
+  box-sizing: border-box;
+  border: 0px solid #fff; /* Añade borde transparente para ampliar área clickeable */
 }
 
 /* Encabezado fijo */
@@ -53,7 +70,7 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
-  background-color: #ccc;
+  background-color: #bdb76b;
   border-bottom: 1px solid black;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -72,7 +89,7 @@
 
 .div-icons {
   display: flex;
-  width: 10%;
+  width: 20%;
   padding-right: 10px;
   align-items: center;
   justify-content: space-between;
@@ -95,6 +112,13 @@
 
 .div-configs {
   margin-top: 10px;
+}
+
+.panel-etiqueta {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 input[type="number"] {
@@ -122,6 +146,10 @@ input[type="number"] {
   margin-top: 27.5px;
   font-family:'Times New Roman', Times, serif ;
   font-size: 17px;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Estándar */
 }
 
 .icono-volumen {
@@ -138,7 +166,7 @@ input[type="number"] {
   color: #646cff;
 }
 
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
   .pantalla-menu {
     padding: 1rem;
   }
@@ -208,4 +236,4 @@ input[type="number"] {
     justify-content: center;
     padding: 0;
   }
-}
+}*/
