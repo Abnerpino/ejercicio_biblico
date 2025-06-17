@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
@@ -63,6 +63,26 @@ const Menu = ({ volumen, setVolumen }) => {
     const guardados = cargarArchivosGuardados();
     setArchivos([archivoOriginal, ...guardados]);
   }, []);
+
+  const saveJSONFile = async () => {
+    let jsonFile;
+    const files = cargarArchivosGuardados();
+    if (archivoSeleccionado === 'original') {
+      jsonFile = {
+        nombre: 'Preguntas_Original',
+        contenido: preguntasJSON
+      };
+    } else {
+      jsonFile = files.find(f => f.id === archivoSeleccionado);
+    }
+
+    const resultado = await ipcRenderer.invoke('guardar-json', jsonFile);
+    console.log(resultado);
+    const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
+    sonido.play().catch((e) => {
+      console.warn('No se pudo reproducir el sonido:', e);
+    });
+  };
 
   const handleAgregarArchivo = async (e) => {
     const archivo = e.target.files[0];
@@ -272,6 +292,12 @@ const Menu = ({ volumen, setVolumen }) => {
             </div>
             <div className='div-icons'>
               <FontAwesomeIcon
+                icon={faFloppyDisk}
+                onClick={saveJSONFile}
+                title='Guardar archivo'
+                style={{ cursor: 'pointer', fontSize: '18px' }}
+              />
+              <FontAwesomeIcon
                 icon={faFileCirclePlus}
                 onClick={() => inputRef.current?.click()}
                 title="Agregar archivo"
@@ -279,9 +305,9 @@ const Menu = ({ volumen, setVolumen }) => {
               />
               <FontAwesomeIcon
                 icon={faTrashCan}
+                onClick={eliminarArchivos}
                 title={archivoSeleccionado === 'original' ? 'No se puede eliminar el archivo original' : 'Eliminar archivo'}
                 style={{ cursor: archivoSeleccionado === 'original' ? 'not-allowed' : 'pointer' }}
-                onClick={eliminarArchivos}
               />
             </div>
           </div>
