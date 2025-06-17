@@ -77,10 +77,12 @@ const Menu = ({ volumen, setVolumen }) => {
     }
 
     const resultado = await ipcRenderer.invoke('guardar-json', jsonFile);
-    const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
-    sonido.play().catch((e) => {
-      console.warn('No se pudo reproducir el sonido:', e);
-    });
+    if (volumen) {
+      const sonido = new Audio(resultado ? 'sounds/save.mp3' : 'sounds/cancel.mp3');
+      sonido.play().catch((e) => {
+        console.warn('No se pudo reproducir el sonido:', e);
+      });
+    }
   };
 
   const handleAgregarArchivo = async (e) => {
