@@ -86,7 +86,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>Por defecto ya viene cargado un archivo de preguntas, pero tú puedes agregar tu archivo con tus propias preguntas, para ello solo pulsa en el icono de "Agregar archivo" y seleccionalo.</p>
                 <p className='text-message'><b>Nota:</b> Los archivos deben de tener un formato en especifico, para más información, presiona sobre la etiqueta "<b>¿Cómo agrego mis preguntas?</b>" que se encuentra en el Menú principal.</p>
                 <p className='text-message'>Si ya agregaste algún archivo de preguntas y quieres eliminarlo, solo presiona el icono de "Eliminar archivo". ¡El archivo de preguntas que viene cargado por defecto no se puede eliminar!</p>
-                <p className='text-message'>También puedes guardar en tus documentos el archivo original de preguntas o algún otro archivo que haya sido cargado antes. Para ello solo pulsa en el icono de "Guardar archivo" y se mostrará una ventana para seleccionar la ubicación en la que guardarás el archivo y si deseas, también puedes cambiarle el nombre.</p>
+                <p className='text-message'>También puedes guardar en tus documentos el archivo original de preguntas o algún otro archivo que haya sido cargado antes. Para ello solo pulsa en el icono de "Guardar archivo" y comenzará a descargarse.</p>
                 <br></br>
                 <p className='text-subtitulo'>Configuraciones Iniciales</p>
                 <p className='text-message'>El tiempo inicial se refiere al "tiempo base" que tiene cada pregunta, el cual por defecto es de 30 segundos y no puede ser menor a 15 segundos.</p>
