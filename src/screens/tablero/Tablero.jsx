@@ -306,6 +306,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                     equipos={ordenEquipos}
                     colores={coloresEquipos}
                     onCerrar={cerrarModalOrden}
+                    volumen={volumen}
                 />
             )}
 

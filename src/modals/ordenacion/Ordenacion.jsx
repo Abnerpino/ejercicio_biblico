@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListOl } from '@fortawesome/free-solid-svg-icons';
+import sonidoBubbles from '../../../public/sounds/bubbles.mp3';
 import './Ordenacion.css';
 
-const Ordenacion = ({ equipos, colores, onCerrar }) => {
+const Ordenacion = ({ equipos, colores, onCerrar, volumen }) => {
     const [equiposVisibles, setEquiposVisibles] = useState(0);
     const [mostrarBoton, setMostrarBoton] = useState(false);
 
     useEffect(() => {
         if (equiposVisibles < equipos.length) {
             const timeout = setTimeout(() => {
+                if (volumen) {
+                    const bubbles = new Audio(sonidoBubbles);
+                    bubbles.play().catch((e) => {
+                        console.warn('No se pudo reproducir el sonido:', e);
+                    });
+                }
                 setEquiposVisibles(equiposVisibles + 1);
-            }, 500);
+            }, 1000);
             return () => clearTimeout(timeout);
         }
     }, [equiposVisibles, equipos.length]);
@@ -20,7 +27,7 @@ const Ordenacion = ({ equipos, colores, onCerrar }) => {
         if (equiposVisibles === equipos.length) {
             const timeout = setTimeout(() => {
                 setMostrarBoton(true);
-            }, 500); // Retraso de medio segundo antes de mostrar el botón
+            }, 1000); // Retraso de un segundo antes de mostrar el botón
             return () => clearTimeout(timeout);
         } else {
             // Si los equipos no están todos visibles, ocultar el botón
@@ -38,7 +45,7 @@ const Ordenacion = ({ equipos, colores, onCerrar }) => {
                 <div className="lista-equipos">
                     {equipos.slice(0, equiposVisibles).map((equipo, i) => (
                         <div key={equipo} className='div-equipo'>
-                            <p className='numero-turno'>{i+1}{(i+1 === 1 || i+1 === 3) ? 'er' : (i+1 >= 4 ? 'to' : 'do')} Turno:</p>
+                            <p className='numero-turno'>{i + 1}{(i + 1 === 1 || i + 1 === 3) ? 'er' : (i + 1 >= 4 ? 'to' : 'do')} Turno:</p>
                             <div
                                 className="equipo-box-orden visible"
                                 style={{
