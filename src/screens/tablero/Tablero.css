@@ -113,9 +113,16 @@
 }
 
 .celda.topico {
+  white-space: nowrap;
+  display: block;
+  align-content: center;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background-color: #007bff;
   color: white;
   font-size: 22px;
+  padding: 0px 5px;
 }
 
 button.celda {
