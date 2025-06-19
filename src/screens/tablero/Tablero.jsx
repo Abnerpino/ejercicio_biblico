@@ -275,7 +275,13 @@ const Tablero = ({ volumen, setVolumen }) => {
             <div className="tabla-preguntas">
                 <div className="fila topicos">
                     {preguntasData.map((topico, i) => (
-                        <div key={i} className="celda topico">{topico.topico}</div>
+                        <div
+                            key={i}
+                            className="celda topico"
+                            title={topico.topico.length > 10 ? `${topico.topico}` : undefined}
+                        >
+                            {topico.topico}
+                        </div>
                     ))}
                 </div>
                 {[0, 1, 2, 3, 4].map((fila) => (
