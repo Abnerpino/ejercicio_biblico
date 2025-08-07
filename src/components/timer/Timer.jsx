@@ -11,10 +11,17 @@ const Timer = ({ segundos, detener, volumen, onUpdate }) => {
     setTiempoRestante(segundos); // sincroniza con cambios externos
   }, [segundos]);
 
+  // Avisa cuando el tiempo cambia (sin provocar error en el render)	//13 todo nuevo
+  useEffect(() => {
+    if (onUpdate) {
+      onUpdate(tiempoRestante);
+    }
+  }, [tiempoRestante]);
+
   useEffect(() => {
     if (detener) {
       setTiempoRestante(0); // fuerza a 0 cuando se activa detener
-      onUpdate?.(0); // Notifica al modal de pregunta
+      
       if (circleRef.current) {
         circleRef.current.style.animation = 'none';
         circleRef.current.style.strokeDashoffset = '283';
@@ -47,7 +54,6 @@ const Timer = ({ segundos, detener, volumen, onUpdate }) => {
         const nuevoTiempo = prev - 1;
         if (nuevoTiempo <= 0) {
           clearInterval(interval);
-          onUpdate?.(0);
           return 0;
         }
 
@@ -61,7 +67,6 @@ const Timer = ({ segundos, detener, volumen, onUpdate }) => {
           }
         }
 
-        onUpdate?.(nuevoTiempo);
         return nuevoTiempo;
       });
     }, 1000);
