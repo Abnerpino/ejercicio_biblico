@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faEye } from '@fortawesome/free-solid-svg-icons';
 import Robo from '../../assets/robbery.svg?react';
+import Circle1 from '../../assets/circle-1.svg?react';
+import Circle2 from '../../assets/circle-2.svg?react';
+import Circle3 from '../../assets/circle-3.svg?react';
 import Timer from '../../components/timer';
 import sonidoCorrectDing from '../../../public/sounds/correct-ding.mp3';
 import sonidoNegativeBeeps from '../../../public/sounds/negative_beeps.mp3';
@@ -9,7 +12,7 @@ import sonidoShow from '../../../public/sounds/show.mp3';
 import sonidoRobo from '../../../public/sounds/robo.mp3';
 import './Pregunta.css';
 
-const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos }) => {
+const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos, contador }) => {
     const [mostrarRespuesta, setMostrarRespuesta] = useState(false);
     const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
     const [animando, setAnimando] = useState(false);
@@ -55,6 +58,8 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
             } else {
                 if (value) {
                     resultado.equipoSuma = turno;
+                } else {
+                    resultado.equipoResta = turno;
                 }
             }
 
@@ -112,7 +117,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                 </div>
 
                 {!mostrarRespuesta ? (
-                    <div style={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '15px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: '15px' }}>
                         <button
                             className="button blue mb-4"
                             onClick={verRespuesta}
@@ -120,6 +125,35 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                             <FontAwesomeIcon icon={faEye} style={{ marginRight: '5px' }} />
                             Mostrar respuesta
                         </button>
+                        {contador > 0 && (
+                            <div
+                                className='icon-contador'
+                                title='Si se acumulan 3 preguntas incorrectas, la siguiente pregunta incorrecta restará el puntaje.'
+                                style={{ display: 'flex' }}
+                            >
+                                {contador === 1 && (
+                                    <Circle1
+                                        width={40}
+                                        height={40}
+                                        style={{ color: "#008f39" }}
+                                    />
+                                )}
+                                {contador === 2 && (
+                                    <Circle2
+                                        width={40}
+                                        height={40}
+                                        style={{ color: "#ff8000" }}
+                                    />
+                                )}
+                                {contador === 3 && (
+                                    <Circle3
+                                        width={40}
+                                        height={40}
+                                        style={{ color: "#ff0000" }}
+                                    />
+                                )}
+                            </div>
+                        )}
                         {numEquipos > 1 && segundosRestantes === 0 && (
                             <button
                                 className="button yellow mb-4"
