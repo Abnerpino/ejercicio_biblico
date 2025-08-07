@@ -17,6 +17,8 @@ const Tablero = ({ volumen, setVolumen }) => {
     const navigate = useNavigate();
     const [turno, setTurno] = useState(null);
     const [puntajes, setPuntajes] = useState({});
+    const [contadores, setContadores] = useState([]);
+    const [equipoParaRestar, setEquipoParaRestar] = useState(null);
     const [preguntasData, setPreguntasData] = useState([]);
     const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(null);
     const [preguntasUsadas, setPreguntasUsadas] = useState(new Set());
@@ -56,10 +58,13 @@ const Tablero = ({ volumen, setVolumen }) => {
 
         // Inicializar puntajes dinámicamente según cantidad de equipos
         const nuevosPuntajes = {};
+        const nuevosContadores = {};
         for (let i = 1; i <= config.equipos; i++) {
             nuevosPuntajes[`equipo${i}`] = 0;
+            nuevosContadores[`equipo${i}`] = 0;
         }
         setPuntajes(nuevosPuntajes);
+        setContadores(nuevosContadores);
     }, [archivoId]);
 
     const iniciarJuego = () => {
@@ -92,11 +97,14 @@ const Tablero = ({ volumen, setVolumen }) => {
 
     const resetearJuego = () => {
         const nuevosPuntajes = {};
+        const nuevosContadores = {};
         for (let i = 1; i <= config.equipos; i++) {
             nuevosPuntajes[`equipo${i}`] = 0;
+            nuevosContadores[`equipo${i}`] = 0;
         }
         setGanador(null);
         setPuntajes(nuevosPuntajes);
+        setContadores(nuevosContadores);
         setPreguntasUsadas(new Set());
         setTurno(null);
         setPreguntaSeleccionada(null);
@@ -185,12 +193,23 @@ const Tablero = ({ volumen, setVolumen }) => {
                 [resultado.equipoSuma]: prev[resultado.equipoSuma] + resultado.puntos,
             }));
         } else if (resultado?.equipoResta) {
-            setPuntajes(prev => ({
-                ...prev,
-                [resultado.equipoResta]: Math.max(0, prev[resultado.equipoResta] - resultado.puntos),
-            }));
-        }
+            setContadores(prev => {
+                const nuevoContador = prev[resultado.equipoResta] + 1 > 3 ? 0 : prev[resultado.equipoResta] + 1;
 
+                // Marcamos si se debe restar puntaje
+                if (nuevoContador === 0 || resultado.equipoResta !== turno) {
+                    setEquipoParaRestar({
+                        equipo: resultado.equipoResta,
+                        puntos: resultado.puntos
+                    });
+                }
+
+                return {
+                    ...prev,
+                    [resultado.equipoResta]: nuevoContador
+                };
+            });
+        }
 
         setBloqueoActivo(true); // activar bloqueo
         setTimeout(() => {
@@ -201,6 +220,17 @@ const Tablero = ({ volumen, setVolumen }) => {
             setTurno(siguiente);
         }, 1000);
     };
+
+    useEffect(() => {
+        if (equipoParaRestar) {
+            setPuntajes(prev => ({
+                ...prev,
+                [equipoParaRestar.equipo]: Math.max(0, prev[equipoParaRestar.equipo] - equipoParaRestar.puntos),
+            }));
+
+            setEquipoParaRestar(null); // limpiar estado
+        }
+    }, [equipoParaRestar]);
 
     useEffect(() => {
         if (!turno) return;
@@ -341,6 +371,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                     numEquipos={config.equipos}
                     turno={turno}
                     equipos={ordenEquipos}
+                    contador={contadores[turno]}
                 />
             )}
 
