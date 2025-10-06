@@ -29,7 +29,8 @@ const archivoOriginal = {
 
 const Menu = ({ volumen, setVolumen }) => {
   const [archivos, setArchivos] = useState([]);
-  const [archivoSeleccionado, setArchivoSeleccionado] = useState('original');
+  const [archivoSeleccionado, setArchivoSeleccionado] = useState(archivoOriginal);
+  const [totalPreguntas, setTotalPreguntas] = useState(archivoSeleccionado.total);
   const [config, setConfig] = useState({ tiempoInicial: 30, incremento: 15, equipos: 1 });
   const [mensajeError, setMensajeError] = useState('');
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -39,8 +40,6 @@ const Menu = ({ volumen, setVolumen }) => {
   const inputRef = useRef();
   const navigate = useNavigate();
 
-  const archivoActual = archivos.find(a => a.id === archivoSeleccionado);
-  const totalPreguntas = archivoActual ? archivoActual.total : 0;
   const opcionesEquipos = [1, 2, 3, 4, 5];
 
   // Función para manejar selección de equipos
@@ -73,13 +72,13 @@ const Menu = ({ volumen, setVolumen }) => {
   const saveJSONFile = () => {
     let jsonFile;
     const files = cargarArchivosGuardados(); // tu función para cargar archivos
-    if (archivoSeleccionado === 'original') {
+    if (archivoSeleccionado.id === 'original') {
       jsonFile = {
         nombre: 'Preguntas_Original',
         contenido: preguntasJSON,
       };
     } else {
-      jsonFile = files.find(f => f.id === archivoSeleccionado);
+      jsonFile = files.find(f => f.id === archivoSeleccionado.id);
     }
     if (!jsonFile) {
       if (volumen) {
@@ -233,9 +232,9 @@ const Menu = ({ volumen, setVolumen }) => {
   };
 
   const eliminarArchivos = async () => {
-    if (archivoSeleccionado === 'original') return;
+    if (archivoSeleccionado.id === 'original') return;
 
-    const eliminar = archivos.find(a => a.id === archivoSeleccionado);
+    const eliminar = archivos.find(a => a.id === archivoSeleccionado.id);
     if (!eliminar) return; // No existe archivo seleccionado
 
     const confirmado = await solicitarConfirmacion(`¿Está seguro de eliminar el archivo de preguntas "${eliminar.nombre}"?`);
@@ -248,12 +247,12 @@ const Menu = ({ volumen, setVolumen }) => {
       });
     }
 
-    const nuevos = archivos.filter(a => a.id !== archivoSeleccionado);
+    const nuevos = archivos.filter(a => a.id !== archivoSeleccionado.id);
     setArchivos([archivoOriginal, ...nuevos.slice(1)]);
     guardarArchivos(nuevos.slice(1));
 
-    if (!nuevos.some(a => a.id === archivoSeleccionado)) {
-      setArchivoSeleccionado('original');
+    if (!nuevos.some(a => a.id === archivoSeleccionado.id)) {
+      setArchivoSeleccionado(archivoOriginal);
     }
   };
 
@@ -275,7 +274,7 @@ const Menu = ({ volumen, setVolumen }) => {
       errores.push("Las cantidades deben ser números enteros, no se permiten números con punto decimal.");
     }
 
-    const archivo = archivos.find(a => a.id === archivoSeleccionado);
+    const archivo = archivos.find(a => a.id === archivoSeleccionado.id);
     if (!archivo) {
       errores.push("Ocurrió un error al seleccionar el archivo de preguntas, vuelve a intentarlo.");
     }
@@ -302,7 +301,7 @@ const Menu = ({ volumen, setVolumen }) => {
     setTimeout(() => {
       navigate('/tablero', {
         state: {
-          archivoId: archivoSeleccionado,
+          archivoId: archivoSeleccionado.id,
           config,
         },
       });
@@ -337,8 +336,8 @@ const Menu = ({ volumen, setVolumen }) => {
               />
               <FontAwesomeIcon
                 icon={faTrashCan}
-                title={archivoSeleccionado === 'original' ? 'No se puede eliminar el archivo original' : 'Eliminar archivo'}
-                style={{ cursor: archivoSeleccionado === 'original' ? 'not-allowed' : 'pointer' }}
+                title={archivoSeleccionado.id === 'original' ? 'No se puede eliminar el archivo original' : 'Eliminar archivo'}
+                style={{ cursor: archivoSeleccionado.id === 'original' ? 'not-allowed' : 'pointer' }}
                 onClick={eliminarArchivos}
               />
             </div>
@@ -348,8 +347,15 @@ const Menu = ({ volumen, setVolumen }) => {
               <Archivo
                 key={a.id}
                 archivo={a}
-                activo={a.id === archivoSeleccionado}
-                onSeleccionar={setArchivoSeleccionado}
+                activo={a.id === archivoSeleccionado.id}
+                onSeleccionar={() => {
+                  setArchivoSeleccionado(a);
+                  setTotalPreguntas(a.total);
+                  const habilitado = a.total > 0 && (a.total % config.equipos === 0);
+                  if (!habilitado) {
+                    setConfig(prev => ({ ...prev, equipos: 1 }));
+                  }
+                }}
                 esOriginal={a.id === 'original'}
                 totalArchivos={archivos.length}
               />
