@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import Marquee from "react-fast-marquee";
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
 import { cargarArchivosGuardados } from '../../utils/storage';
@@ -312,9 +313,14 @@ const Tablero = ({ volumen, setVolumen }) => {
                         <div
                             key={i}
                             className="celda topico"
-                            title={topico.topico.length > 10 ? `${topico.topico}` : undefined}
                         >
-                            {topico.topico}
+                            {topico.topico.length > 10 ? (
+                                <Marquee speed={25}>
+                                    <span style={{ marginRight: 50 }}>{topico.topico}</span>
+                                </Marquee>
+                            ) : (
+                                topico.topico
+                            )}
                         </div>
                     ))}
                 </div>
