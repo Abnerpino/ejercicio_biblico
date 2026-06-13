@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
-import favicon from '../public/iasd.png';
+import favicon from '../public/logo_app.png';
 import './index.css'
 
 const link = document.createElement('link');
