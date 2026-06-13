@@ -108,7 +108,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>El juego acaba cuando se terminan las preguntas o se presiona el botón "Terminar Juego". Inmediatamente se mostrará una ventana que anuncia al ganador (o un empate, si es el caso) juntamente con una gráfica de los puntajes de cada equipo y un botón para volver al Menú.</p>
             </div>
         </div>
-        ;
+    ;
 
     const howAddQuetions =
         <div className='div-contenido'>
@@ -179,7 +179,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-message'>De igual manera, si desea usar el archivo JSON de preguntas que viene por defecto en el juego (o cualquier otro que haya sido cargado antes) y editarlo para hacer el trabajo más fácil, puede obtenerlo pulsando en el icono de "Guardar archivo" que aparece arriba de la lista de Archivos de Preguntas cargados.</p>
             </div>
         </div>
-        ;
+    ;
 
     const about =
         <div className='div-contenido'>
@@ -208,7 +208,7 @@ const Multiple = ({ modal, onCerrar }) => {
                 <p className='text-versiculo'>"Escudriñad las Escrituras; porque a vosotros os parece que en ellas tenéis la vida eterna; y ellas son las que dan testimonio de mí." - San Juan 5:39</p>
             </div>
         </div>
-        ;
+    ;
 
     return (
         <div className="modal">
