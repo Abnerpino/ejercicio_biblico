@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookBible, faTrashCan, faFileCirclePlus, faRightFromBracket, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
 import Volumen from '../../assets/volume.svg?react';
 import SinVolumen from '../../assets/volume-slash.svg?react';
-import { cargarArchivosGuardados, guardarArchivos } from '../../utils/storage';
+import LogoApp from '../../assets/logo_app.png';
+import LogoDev from '../../assets/pino_dev.png';
 import preguntasJSON from '../../data/preguntas.json';
 import Archivo from '../../components/archivo';
 import Mensaje from '../../modals/mensaje';
@@ -409,6 +411,32 @@ const Menu = ({ volumen, setVolumen }) => {
           cursor='pointer'
         />
       </div>
+
+      <img 
+        src={LogoApp}
+        alt="Logo App"
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          left: '20px',
+          width: '50px',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} 
+      />
+
+      <img 
+        src={LogoDev} 
+        alt="<Pino_Dev/>" 
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          width: '200px',
+          pointerEvents: 'none',
+          zIndex: 0               
+        }} 
+      />
 
       <Mensaje
         mensaje={mensajeError}
