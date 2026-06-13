@@ -8,7 +8,7 @@ import Robo from '../../assets/robbery.svg?react';
 import Timer from '../../components/timer';
 import './Pregunta.css';
 
-const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos, contador }) => {
+const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, incremento, onResponder, volumen, numEquipos, turno, equipos, nombresEquipos, contador }) => {
     const [mostrarRespuesta, setMostrarRespuesta] = useState(false);
     const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
     const [animando, setAnimando] = useState(false);
@@ -20,9 +20,6 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
 
     const sincronizarTiempo = (nuevoTiempo) => {
         setSegundosRestantes(nuevoTiempo);
-        /*if (nuevoTiempo === 0 && !mostrarRespuesta) {
-            setMostrarRespuesta(true);
-        }*/
     };
 
     const responder = (value) => {
@@ -97,6 +94,11 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                     </div>
                 )}
 
+                <div className="contenedor-turno">
+                    <p className="turno-texto">Turno de: </p>
+                    <p className="turno-texto nombre">{nombresEquipos[turno]}</p>
+                </div>
+
                 <div className="flex justify-between items-center mb-4">
                     <p className="titulo-texto">{topico}: {puntos} puntos</p>
                 </div>
@@ -157,7 +159,7 @@ const Pregunta = ({ index, topico, pregunta, respuesta, puntos, cita, tiempo, in
                                 disabled={robarPuntos}
                             >
                                 <Robo width={17.5} height={17.5} />
-                                {robarPuntos ? '¡Robo de Puntos Activado!' : `Robo de Puntos: ${siguiente.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}`}
+                                {robarPuntos ? '¡Robo de Puntos Activado!' : `Robo de Puntos: ${nombresEquipos[siguiente]}`}
                             </button>
                         )}
                     </div>

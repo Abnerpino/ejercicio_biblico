@@ -7,9 +7,9 @@ import './Ganador.css';
 
 const coloresBarras = ['#4169e1', '#32cd32', '#FF33A8', '#ff4500', '#8b0000'];
 
-const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
+const Ganador = ({ winner, puntajes, nombresEquipos, onVolverAlMenu, volumen }) => {
     const hasPlayedRef = useRef(false);
-    const nombreSeparado = winner.replace(/(\D+)(\d+)/, '$1 $2');
+    const nombreGanador = winner === 'Empate' ? 'EMPATE' : nombresEquipos[winner];
 
     useEffect(() => {
         if (!winner || hasPlayedRef.current) return;
@@ -27,7 +27,7 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
                 winners.play().catch(err => console.warn('Error al reproducir sonido de victoria:', err));
             }
 
-            // 🎉 Confeti al azar
+            // Confeti al azar
             confetti({
                 particleCount: 300,
                 spread: 100,
@@ -45,9 +45,9 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
 
     // Transformar objeto puntajes a array para Recharts
     const data = Object.entries(puntajes).map(([equipo, score]) => ({
-        name: equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase(),
+        name: nombresEquipos[equipo],
         score,
-    }));
+    })).sort((a, b) => b.score - a.score);
 
     return (
         <div className="modal">
@@ -61,7 +61,7 @@ const Ganador = ({ winner, puntajes, onVolverAlMenu, volumen }) => {
                         ? <FontAwesomeIcon icon={faHandshake} shake size='2x' />
                         : <FontAwesomeIcon icon={faTrophy} beat size='2x' style={{ color: "#FFD43B" }} />
                     }
-                    <p className='texto-winner'>{winner === 'Empate' ? 'EMPATE' : `${nombreSeparado.toUpperCase()}`}</p>
+                    <p className='texto-winner'>{winner === 'Empate' ? 'EMPATE' : `${nombreGanador}`}</p>
                     {winner === 'Empate'
                         ? <FontAwesomeIcon icon={faHandshake} shake size='2x' />
                         : <FontAwesomeIcon icon={faTrophy} beat size='2x' style={{ color: "#FFD43B" }} />
