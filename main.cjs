@@ -8,7 +8,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1300,
     height: 800,
-    icon: path.join(__dirname, 'dist', 'iasd.ico'),
+    icon: path.join(__dirname, 'dist', 'logo.ico'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
