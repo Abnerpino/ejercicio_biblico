@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faListOl } from '@fortawesome/free-solid-svg-icons';
+import { faListOl, faPen } from '@fortawesome/free-solid-svg-icons';
 import './Ordenacion.css';
 
-const Ordenacion = ({ equipos, colores, onCerrar, volumen }) => {
+const Ordenacion = ({ equipos, nombresEquipos, setNombresEquipos, colores, onCerrar, volumen }) => {
     const [equiposVisibles, setEquiposVisibles] = useState(0);
     const [mostrarBoton, setMostrarBoton] = useState(false);
+    const [editando, setEditando] = useState(null);
+    const [nombreTemp, setNombreTemp] = useState('');
 
     useEffect(() => {
         if (equiposVisibles < equipos.length) {
@@ -34,6 +36,23 @@ const Ordenacion = ({ equipos, colores, onCerrar, volumen }) => {
         }
     }, [equiposVisibles, equipos.length]);
 
+    // Inicia el modo edición
+    const iniciarEdicion = (equipo) => {
+        setEditando(equipo);
+        setNombreTemp(nombresEquipos[equipo]);
+    };
+
+    // Guarda el nombre modificado
+    const guardarEdicion = (equipo) => {
+        if (nombreTemp.trim() !== '') {
+            setNombresEquipos(prev => ({
+                ...prev,
+                [equipo]: nombreTemp.trim().toUpperCase()
+            }));
+        }
+        setEditando(null);
+    };
+
     return (
         <div className="modal-orden">
             <div className="modal-contenido-orden">
@@ -50,10 +69,51 @@ const Ordenacion = ({ equipos, colores, onCerrar, volumen }) => {
                                 style={{
                                     backgroundColor: colores[i % colores.length],
                                     color: 'white',
-                                    transitionDelay: `${i * 0.3}s`, // cada equipo se anima con 0.3s de diferencia ro do ro to to
+                                    transitionDelay: `${i * 0.3}s`, // cada equipo se anima con 0.3s de diferencia
+                                    position: 'relative',
+                                    overflow: 'hidden'
                                 }}
                             >
-                                {equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}
+                                {editando === equipo ? (
+                                    <input 
+                                        type="text" 
+                                        value={nombreTemp} 
+                                        onChange={(e) => setNombreTemp(e.target.value)}
+                                        onBlur={() => guardarEdicion(equipo)}
+                                        onKeyDown={(e) => e.key === 'Enter' && guardarEdicion(equipo)}
+                                        autoFocus
+                                        maxLength={10}
+                                        style={{
+                                            background: 'transparent',
+                                            border: 'none',
+                                            borderBottom: '2px solid white',
+                                            color: 'white',
+                                            fontSize: 'inherit',
+                                            fontFamily: 'inherit',
+                                            textAlign: 'center',
+                                            outline: 'none',
+                                            width: '80%'
+                                        }}
+                                    />
+                                ) : (
+                                    <>
+                                        <span>{nombresEquipos[equipo]}</span>
+                                        <FontAwesomeIcon 
+                                            icon={faPen} 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                right: '15px', 
+                                                top: '50%',
+                                                transform: 'translateY(-50%)',
+                                                cursor: 'pointer',
+                                                fontSize: '0.8em',
+                                                opacity: 0.8
+                                            }} 
+                                            onClick={() => iniciarEdicion(equipo)}
+                                            title="Editar nombre"
+                                        />
+                                    </>
+                                )}
                             </div>
                         </div>
                     ))}
