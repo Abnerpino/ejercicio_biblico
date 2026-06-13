@@ -23,6 +23,7 @@ const Tablero = ({ volumen, setVolumen }) => {
     const [turno, setTurno] = useState(null);
     const [puntajes, setPuntajes] = useState({});
     const [contadores, setContadores] = useState([]);
+    const [nombresEquipos, setNombresEquipos] = useState({});
     const [equipoParaRestar, setEquipoParaRestar] = useState(null);
     const [preguntasData, setPreguntasData] = useState([]);
     const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(null);
@@ -64,12 +65,15 @@ const Tablero = ({ volumen, setVolumen }) => {
         // Inicializar puntajes dinámicamente según cantidad de equipos
         const nuevosPuntajes = {};
         const nuevosContadores = {};
+        const nuevosNombres = {};
         for (let i = 1; i <= config.equipos; i++) {
             nuevosPuntajes[`equipo${i}`] = 0;
             nuevosContadores[`equipo${i}`] = 0;
+            nuevosNombres[`equipo${i}`] = `EQUIPO ${i}`;
         }
         setPuntajes(nuevosPuntajes);
         setContadores(nuevosContadores);
+        setNombresEquipos(nuevosNombres);
     }, [archivoId]);
 
     const iniciarJuego = () => {
@@ -79,15 +83,11 @@ const Tablero = ({ volumen, setVolumen }) => {
                 console.warn('No se pudo reproducir el sonido:', e);
             });
         }
-        if (config.equipos === 1) {
-            setOrdenEquipos(['equipo1']);
-            setTurno('equipo1');
-        } else {
-            const equipos = Array.from({ length: config.equipos }, (_, i) => `equipo${i + 1}`);
-            const aleatorio = equipos.sort(() => Math.random() - 0.5);
-            setOrdenEquipos(aleatorio);
-            setMostrarModalOrden(true);
-        }
+        
+        const equipos = Array.from({ length: config.equipos }, (_, i) => `equipo${i + 1}`);
+        const aleatorio = equipos.sort(() => Math.random() - 0.5);
+        setOrdenEquipos(aleatorio);
+        setMostrarModalOrden(true);
         setFinJuego(false);
     };
 
@@ -103,13 +103,16 @@ const Tablero = ({ volumen, setVolumen }) => {
     const resetearJuego = () => {
         const nuevosPuntajes = {};
         const nuevosContadores = {};
+        const nuevosNombres = {};
         for (let i = 1; i <= config.equipos; i++) {
             nuevosPuntajes[`equipo${i}`] = 0;
             nuevosContadores[`equipo${i}`] = 0;
+            nuevosNombres[`equipo${i}`] = `EQUIPO ${i}`;
         }
         setGanador(null);
         setPuntajes(nuevosPuntajes);
         setContadores(nuevosContadores);
+        setNombresEquipos(nuevosNombres);
         setPreguntasUsadas(new Set());
         setTurno(null);
         setPreguntaSeleccionada(null);
@@ -301,7 +304,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                         className={`equipo-box ${turno === equipo ? 'activo' : ''}`}
 
                     >
-                        <p className='texto-equipo'>{equipo.replace(/(\D+)(\d+)/, '$1 $2').toUpperCase()}</p>
+                        <p className='texto-equipo'>{nombresEquipos[equipo]}</p>
                         <p className='texto-puntaje'>{puntajes[equipo]}</p>
                     </div>
                 ))}
@@ -346,6 +349,8 @@ const Tablero = ({ volumen, setVolumen }) => {
             {mostrarModalOrden && (
                 <Ordenacion
                     equipos={ordenEquipos}
+                    nombresEquipos={nombresEquipos}
+                    setNombresEquipos={setNombresEquipos}
                     colores={coloresEquipos}
                     onCerrar={cerrarModalOrden}
                     volumen={volumen}
@@ -381,6 +386,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                     numEquipos={config.equipos}
                     turno={turno}
                     equipos={ordenEquipos}
+                    nombresEquipos={nombresEquipos}
                     contador={contadores[turno]}
                 />
             )}
@@ -389,6 +395,7 @@ const Tablero = ({ volumen, setVolumen }) => {
                 <Ganador
                     winner={ganador}
                     puntajes={puntajes}
+                    nombresEquipos={nombresEquipos}
                     onVolverAlMenu={volverAlMenu}
                     volumen={volumen}
                 />
