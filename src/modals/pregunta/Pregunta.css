@@ -20,6 +20,11 @@
   text-align: center;
 }
 
+.contenedor-turno {
+  text-align: start;
+  margin-bottom: 10px;
+}
+
 .respuesta-animacion {
   position: absolute;
   top: 0;
@@ -60,6 +65,18 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.turno-texto {
+  font-size: 15px;
+  font-weight: lighter;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.turno-texto.nombre {
+  font-weight: bold;
 }
 
 .titulo-texto {

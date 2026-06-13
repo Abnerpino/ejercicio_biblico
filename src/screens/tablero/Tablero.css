@@ -64,6 +64,7 @@
   text-align: center;
   background-color: white;
   padding: 10px 10px;
+  overflow: hidden;
 }
 
 .equipo-box.activo {
