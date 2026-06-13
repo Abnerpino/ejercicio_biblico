@@ -1,9 +1,9 @@
 {
   "name": "ejercicio_biblico",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Ejercicio Bíblico de preguntas y respuestas.",
-  "author": "Ing. Abner Pino Federico <abner@example.com>",
+  "author": "Ing. Abner Pino Federico <abnerpino15@gmail.com>",
   "type": "module",
   "main": "main.cjs",
   "build": {
@@ -21,7 +21,7 @@
       "target": [
         "portable"
       ],
-      "icon": "public/iasd.ico",
+      "icon": "public/logo.ico",
       "legalTrademarks": "© 2025 Abner Pino Federico"
     }
   },
